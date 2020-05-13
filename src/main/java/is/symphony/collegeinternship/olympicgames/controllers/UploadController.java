@@ -66,10 +66,10 @@ public class UploadController {
         return athleteRepository.findAll();
     }
 
-    @GetMapping("/athletes/{id}")
-    public Optional<Athlete> getAthleteById(@PathVariable(value = "id") int id){
+    @GetMapping("/athletes/{badge_number}")
+    public Optional<Athlete> getAthleteById(@PathVariable(value = "badge_number") String badge_number){
 
-        return athleteRepository.findById(id);
+        return athleteRepository.findById(badge_number);
     }
 
 

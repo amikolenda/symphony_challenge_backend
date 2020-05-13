@@ -18,12 +18,6 @@ public class ExceptionInterceptor extends ResponseEntityExceptionHandler {
         String exceptionResponse = String.format("Invalid input parameters: %s\n", ex.getMessage());
         return new ResponseEntity<String>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public final ResponseEntity<String> handleDataIntegrityViolationExceptions(
-            DataIntegrityViolationException e) {
-        String exceptionResponse = String.format("User with same badge number exists: %s\n", e.getMessage());
-        return new ResponseEntity<String>(exceptionResponse, HttpStatus.BAD_REQUEST);
-    }
+    
 
 }

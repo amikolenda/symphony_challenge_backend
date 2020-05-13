@@ -31,10 +31,23 @@ public class AthleteService {
 
     public ResponseEntity<String> athleteValidationAdd(List<@Valid Athlete> athletes){
         for (Athlete athlete:athletes) {
+            if (athleteRepository.existsById(athlete.getBadge_number())){
+                Athlete existingAthlete = athleteRepository.findById(athlete.getBadge_number()).get();
+                if (athlete.getFirst_name() != null) existingAthlete.setFirst_name(athlete.getFirst_name());
+                if (athlete.getLast_name() != null) existingAthlete.setLast_name(athlete.getLast_name());
+                if (athlete.getDate_of_birth() != null) existingAthlete.setDate_of_birth(athlete.getDate_of_birth());
+                if (athlete.getNationality() != null) existingAthlete.setNationality(athlete.getNationality());
+                if (athlete.getPhoto() != null) existingAthlete.setPhoto(athlete.getPhoto());
+                if (athlete.getGender() != null) existingAthlete.setGender(athlete.getGender());
 
-            athleteRepository.save(athlete);
+                Athlete updatedAthlete = athleteRepository.save(existingAthlete);
+
+            } else{
+                athleteRepository.save(athlete);
+            }
+
         }
-        return new ResponseEntity<String>("Athletes uploaded.", HttpStatus.OK);
+        return new ResponseEntity<String>("Athletes uploaded/updated.", HttpStatus.OK);
 
     }
 

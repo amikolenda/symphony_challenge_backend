@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Athlete {
-    @Id
+
     @GeneratedValue( strategy = GenerationType.AUTO )
     private int id;
 
@@ -34,7 +34,9 @@ public class Athlete {
     private String date_of_birth;
 
     private String nationality;
+
     @NotNull
+    @Id
     private String badge_number;
 
     private String photo;
