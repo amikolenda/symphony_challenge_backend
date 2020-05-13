@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS ATHLETE;
+DROP TABLE IF EXISTS Athlete;
 
-CREATE TABLE ATHLETE (
-                         ID INT AUTO_INCREMENT PRIMARY KEY,
-                         badge_number VARCHAR(100) NOT NULL UNIQUE,
+CREATE TABLE Athlete (
+                         id INT AUTO_INCREMENT PRIMARY KEY,
                          first_name VARCHAR(100),
                          last_name VARCHAR(100),
                          date_of_birth VARCHAR(100) NOT NULL,
                          nationality VARCHAR(10),
+                         badge_number VARCHAR(100) NOT NULL UNIQUE,
                          photo VARCHAR,
                          gender VARCHAR(1),
-                         role_name VARCHAR(100)
+                         role VARCHAR(100)
 
 );
