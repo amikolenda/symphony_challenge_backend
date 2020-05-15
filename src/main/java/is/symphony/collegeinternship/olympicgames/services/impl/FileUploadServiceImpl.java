@@ -16,7 +16,7 @@ import java.io.Reader;
 import java.util.List;
 
 @Service
-public class FileUploadServiceImpl implements FileUploadService{
+public class FileUploadServiceImpl implements FileUploadService {
     @Autowired
     private AthleteService athleteService;
 
