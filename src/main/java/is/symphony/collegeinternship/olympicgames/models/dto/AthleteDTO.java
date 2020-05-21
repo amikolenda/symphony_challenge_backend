@@ -1,5 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 
 import javax.persistence.CascadeType;
@@ -14,45 +15,52 @@ public class AthleteDTO {
 
     @NotNull
     @Size(min = 2)
-    private String first_name;
+    @JsonProperty("first_name")
+    private String firstName;
 
     @NotNull
     @Size(min = 2)
-    private String last_name;
+    @JsonProperty("last_name")
+    private String lastName;
 
     @NotNull
-    private String date_of_birth;
+    @JsonProperty("date_of_birth")
+    private String dateOfBirth;
 
+    @JsonProperty("nationality")
     private String nationality;
 
+    @JsonProperty("country")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
     @NotNull
     @Id
-    private String badge_number;
+    @JsonProperty("badge_number")
+    private String badgeNumber;
 
+    @JsonProperty("photo")
     private String photo;
+
+    @JsonProperty("gender")
     private String gender;
+
+    @JsonProperty("role")
     private String role = "ATHLETE";
 
     public AthleteDTO() {
     }
 
-    public AthleteDTO(@NotNull @Size(min = 2) String first_name, @NotNull @Size(min = 2) String last_name, @NotNull String date_of_birth, String nationality, Country country, @NotNull String badge_number, String photo, String gender, String role) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.date_of_birth = date_of_birth;
+    public AthleteDTO(@NotNull @Size(min = 2) String firstName, @NotNull @Size(min = 2) String lastName, @NotNull String dateOfBirth, String nationality, Country country, @NotNull String badgeNumber, String photo, String gender, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
         this.nationality = nationality;
         this.country = country;
-        this.badge_number = badge_number;
+        this.badgeNumber = badgeNumber;
         this.photo = photo;
         this.gender = gender;
-        this.role = role;
-    }
-
-    public void setRole(String role) {
         this.role = role;
     }
 
@@ -60,68 +68,81 @@ public class AthleteDTO {
         return role;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getDate_of_birth() {
-        return date_of_birth;
-    }
-
-    public void setDate_of_birth(String date_of_birth) {
-        this.date_of_birth = date_of_birth;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public String getNationality() {
         return nationality;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getBadge_number() {
-        return badge_number;
-    }
-
-    public void setBadge_number(String badge_number) {
-        this.badge_number = badge_number;
+    public String getBadgeNumber() {
+        return badgeNumber;
     }
 
     public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public Country getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public AthleteDTO setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public AthleteDTO setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public AthleteDTO setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public AthleteDTO setNationality(String nationality) {
+        this.nationality = nationality;
+        return this;
+    }
+
+    public AthleteDTO setCountry(Country country) {
         this.country = country;
+        return this;
+    }
+
+    public AthleteDTO setBadgeNumber(String badgeNumber) {
+        this.badgeNumber = badgeNumber;
+        return this;
+    }
+
+    public AthleteDTO setPhoto(String photo) {
+        this.photo = photo;
+        return this;
+    }
+
+    public AthleteDTO setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public AthleteDTO setRole(String role) {
+        this.role = role;
+        return this;
     }
 
     @Override
@@ -129,23 +150,23 @@ public class AthleteDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AthleteDTO athlete = (AthleteDTO) o;
-        return Objects.equals(badge_number, athlete.badge_number);
+        return Objects.equals(badgeNumber, athlete.badgeNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(badge_number);
+        return Objects.hash(badgeNumber);
     }
 
     @Override
     public String toString() {
         return "AthleteDTO{" +
-                "first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", date_of_birth='" + date_of_birth + '\'' +
+                "first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
+                ", date_of_birth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
                 ", country=" + country +
-                ", badge_number='" + badge_number + '\'' +
+                ", badge_number='" + badgeNumber + '\'' +
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +

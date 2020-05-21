@@ -19,23 +19,25 @@ public class Country implements Serializable {
     @Column(name = "countryShortCode")
     String countryShortCode;
 
-    public String getCountryName() {
-        return countryName;
-    }
-
     public Country() {
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public String getCountryName() {
+        return countryName;
     }
 
     public String getCountryShortCode() {
         return countryShortCode;
     }
 
-    public void setCountryShortCode(String countryShortCode) {
+    public Country setCountryName(String countryName) {
+        this.countryName = countryName;
+        return this;
+    }
+
+    public Country setCountryShortCode(String countryShortCode) {
         this.countryShortCode = countryShortCode;
+        return this;
     }
 
     @Override

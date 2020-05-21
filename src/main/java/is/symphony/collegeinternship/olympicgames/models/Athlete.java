@@ -1,5 +1,7 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,14 +19,14 @@ public class Athlete {
     @Column(name = "first_name")
     @NotNull
     @Size(min = 2)
-    private String first_name;
+    private String firstName;
     @Column(name = "last_name")
     @NotNull
     @Size(min = 2)
-    private String last_name;
+    private String lastName;
     @Column(name = "date_of_birth")
     @NotNull
-    private String date_of_birth;
+    private String dateOfBirth;
     @Column(name = "nationality")
     private String nationality;
 
@@ -35,7 +37,7 @@ public class Athlete {
     @Column(name = "badge_number")
     @NotNull
     @Id
-    private String badge_number;
+    private String badgeNumber;
     @Column(name = "photo")
     private String photo;
     @Column(name = "gender")
@@ -45,77 +47,91 @@ public class Athlete {
 
     public Athlete() {
     }
-
-    public String getFirst_name() {
-        return first_name;
+    @JsonProperty("first_name")
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    @JsonProperty("last_name")
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getDate_of_birth() {
-        return date_of_birth;
-    }
-
-    public void setDate_of_birth(String date_of_birth) {
-        this.date_of_birth = date_of_birth;
+    @JsonProperty("date_of_birth")
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public String getNationality() {
         return nationality;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
     public Country getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    @JsonProperty("badge_number")
+    public String getBadgeNumber() {
+        return badgeNumber;
     }
 
-    public String getBadge_number() {
-        return badge_number;
-    }
-
-    public void setBadge_number(String badge_number) {
-        this.badge_number = badge_number;
-    }
 
     public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
 
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public Athlete setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public Athlete setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public Athlete setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public Athlete setNationality(String nationality) {
+        this.nationality = nationality;
+        return this;
+    }
+
+    public Athlete setCountry(Country country) {
+        this.country = country;
+        return this;
+    }
+
+    public Athlete setBadgeNumber(String badgeNumber) {
+        this.badgeNumber = badgeNumber;
+        return this;
+    }
+
+    public Athlete setPhoto(String photo) {
+        this.photo = photo;
+        return this;
+    }
+
+    public Athlete setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public Athlete setRole(String role) {
         this.role = role;
+        return this;
     }
 
     @Override
@@ -123,23 +139,23 @@ public class Athlete {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Athlete athlete = (Athlete) o;
-        return Objects.equals(badge_number, athlete.badge_number);
+        return Objects.equals(badgeNumber, athlete.badgeNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(badge_number);
+        return Objects.hash(badgeNumber);
     }
 
     @Override
     public String toString() {
         return "Athlete{" +
-                "first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", date_of_birth='" + date_of_birth + '\'' +
+                "first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
+                ", date_of_birth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
                 ", countryId=" + country +
-                ", badge_number='" + badge_number + '\'' +
+                ", badge_number='" + badgeNumber + '\'' +
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
