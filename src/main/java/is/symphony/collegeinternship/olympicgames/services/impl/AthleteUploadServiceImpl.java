@@ -31,17 +31,17 @@ public class AthleteUploadServiceImpl implements AthleteUploadService {
     public void updateAthlete(List<Athlete> athletes) {
         athletes.stream()
                 .forEach(athlete -> {
-                    if (athleteRepository.existsById(athlete.getBadge_number())) updateFields(athlete);
+                    if (athleteRepository.existsById(athlete.getBadgeNumber())) updateFields(athlete);
                     else athleteService.save(athlete);
                 });
     }
 
     @Override
     public void updateFields(Athlete athlete){
-        Athlete existingAthlete = athleteRepository.findById(athlete.getBadge_number()).get();
-        if (athlete.getFirst_name() != null) existingAthlete.setFirst_name(athlete.getFirst_name());
-        if (athlete.getLast_name() != null) existingAthlete.setLast_name(athlete.getLast_name());
-        if (athlete.getDate_of_birth() != null) existingAthlete.setDate_of_birth(athlete.getDate_of_birth());
+        Athlete existingAthlete = athleteRepository.findById(athlete.getBadgeNumber()).get();
+        if (athlete.getFirstName() != null) existingAthlete.setFirstName(athlete.getFirstName());
+        if (athlete.getLastName() != null) existingAthlete.setLastName(athlete.getLastName());
+        if (athlete.getDateOfBirth() != null) existingAthlete.setDateOfBirth(athlete.getDateOfBirth());
         if (athlete.getNationality() != null) existingAthlete.setNationality(athlete.getNationality());
         if (athlete.getPhoto() != null) existingAthlete.setPhoto(athlete.getPhoto());
         if (athlete.getGender() != null) existingAthlete.setGender(athlete.getGender());

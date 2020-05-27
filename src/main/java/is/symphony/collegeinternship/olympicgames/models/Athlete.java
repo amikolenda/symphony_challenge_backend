@@ -47,6 +47,13 @@ public class Athlete {
 
     public Athlete() {
     }
+    public Athlete(String firstName, String lastName, String badgeNumber, String dateOfBirth, String nationality) {
+        this.badgeNumber = badgeNumber;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.dateOfBirth = dateOfBirth;
+        this.nationality = nationality;
+    }
     @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;

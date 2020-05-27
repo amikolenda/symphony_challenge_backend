@@ -1,0 +1,30 @@
+[{
+"first_name": "Ian" ,
+"last_name": "Millar" ,
+"date_of_birth": "pass" ,
+"nationality": "CA" ,
+"badge_number": "11111-A" ,
+"photo":
+"https://upload.wikimedia.org/wikipedia/commons/b/bd/Ian_Millar_head.jpg",
+"gender": "M"
+},
+{
+"first_name": "Noriaki" ,
+"last_name": "Kasai" ,
+"date_of_birth": "06-06-1972" ,
+"nationality": "JP" ,
+"badge_number": "22222-B" ,
+"photo":
+"https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/20170105_VST_Bischofshofen_2734.jpg/1280px-20170105_VST_Bischofshofen_2734.jpg" ,
+"gender": "M"
+},
+{
+"first_name": "Jeannie" ,
+"last_name": "Longo" ,
+"date_of_birth": "31-10-1958" ,
+"nationality": "FR" ,
+"badge_number": "33333-c" ,
+"photo":
+"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Jeannie_Longo_-_6_jours_de_Grenoble_2011.jpg/1280px-Jeannie_Longo_-_6_jours_de_Grenoble_2011.jpg" ,
+"gender": "F"
+}]
