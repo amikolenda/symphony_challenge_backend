@@ -1,0 +1,164 @@
+package is.symphony.collegeinternship.olympicgames.models;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
+@Table(name = "ATHLETE")
+@Entity
+public class Athlete {
+    @Column(name = "first_name")
+    @NotNull
+    @Size(min = 2)
+    private String firstName;
+    @Column(name = "last_name")
+    @NotNull
+    @Size(min = 2)
+    private String lastName;
+    @Column(name = "date_of_birth")
+    @NotNull
+    private String dateOfBirth;
+    @Column(name = "nationality")
+    private String nationality;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "countryName", referencedColumnName = "countryName")
+    private Country country;
+
+    @Column(name = "badge_number")
+    @NotNull
+    @Id
+    private String badgeNumber;
+    @Column(name = "photo")
+    private String photo;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "role")
+    private String role = "ATHLETE";
+
+    public Athlete() {
+    }
+    @JsonProperty("first_name")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @JsonProperty("last_name")
+    public String getLastName() {
+        return lastName;
+    }
+
+    @JsonProperty("date_of_birth")
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    @JsonProperty("badge_number")
+    public String getBadgeNumber() {
+        return badgeNumber;
+    }
+
+
+    public String getPhoto() {
+        return photo;
+    }
+
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public Athlete setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public Athlete setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public Athlete setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public Athlete setNationality(String nationality) {
+        this.nationality = nationality;
+        return this;
+    }
+
+    public Athlete setCountry(Country country) {
+        this.country = country;
+        return this;
+    }
+
+    public Athlete setBadgeNumber(String badgeNumber) {
+        this.badgeNumber = badgeNumber;
+        return this;
+    }
+
+    public Athlete setPhoto(String photo) {
+        this.photo = photo;
+        return this;
+    }
+
+    public Athlete setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public Athlete setRole(String role) {
+        this.role = role;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Athlete athlete = (Athlete) o;
+        return Objects.equals(badgeNumber, athlete.badgeNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(badgeNumber);
+    }
+
+    @Override
+    public String toString() {
+        return "Athlete{" +
+                "first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
+                ", date_of_birth='" + dateOfBirth + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", countryId=" + country +
+                ", badge_number='" + badgeNumber + '\'' +
+                ", photo='" + photo + '\'' +
+                ", gender='" + gender + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+}
