@@ -9,7 +9,6 @@ import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.AthleteRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,18 +28,23 @@ public class AthleteService {
             athleteRepository.save(athlete);
     }
 
-    public List<AthleteDTO> findAll() throws ResourceNotFoundException {
+    public List<AthleteDTO> findAllDTO() throws ResourceNotFoundException {
         List<AthleteDTO> allAthletes = athleteRepository.findAll().stream().map(dtoConverterService::convertToDTO).collect(Collectors.toList());
         if (allAthletes.isEmpty()) throw new ResourceNotFoundException();
         else return allAthletes;
     }
-    public AthleteDTO findById(String badge_number) throws NoSuchElementException {
+    public AthleteDTO findDTOById(String badge_number) throws NoSuchElementException {
         try{
             return dtoConverterService.convertToDTO(athleteRepository.findById(badge_number).get());
         } catch (Exception e){
             throw new NoSuchElementException();
         }
     }
+
+    public Athlete findById(String badge_number){
+        return athleteRepository.findById(badge_number).get();
+    }
+
 
 
 

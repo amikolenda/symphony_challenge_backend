@@ -22,11 +22,11 @@ public class AthleteController {
 
     @GetMapping
     public ResponseEntity<List<AthleteDTO>> showAthletes() throws ResourceNotFoundException {
-        return ResponseEntity.ok().body(athleteService.findAll());
+        return ResponseEntity.ok().body(athleteService.findAllDTO());
     }
     @GetMapping("/{badge_number}")
     public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("badge_number") String badge_number) throws NoSuchElementException {
-        return ResponseEntity.ok().body(athleteService.findById(badge_number));
+        return ResponseEntity.ok().body(athleteService.findDTOById(badge_number));
     }
 
 }

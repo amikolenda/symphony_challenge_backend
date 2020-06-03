@@ -3,12 +3,15 @@ package is.symphony.collegeinternship.olympicgames;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.repositories.AthleteRepository;
+import is.symphony.collegeinternship.olympicgames.repositories.CountryRepository;
 import is.symphony.collegeinternship.olympicgames.services.impl.CountryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,6 +20,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackageClasses = {AthleteRepository.class, CountryRepository.class})
 public class OlympicGamesApplication {
 
 	public static void main(String[] args) {
