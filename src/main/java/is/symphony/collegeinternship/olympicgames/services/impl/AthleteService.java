@@ -46,6 +46,14 @@ public class AthleteService {
     }
 
 
-
-
+    public void updateAthlete(Athlete existingAthlete, Athlete athlete) {
+        existingAthlete.setFirstName(athlete.getFirstName());
+        existingAthlete.setLastName(athlete.getLastName());
+        existingAthlete.setDateOfBirth(athlete.getDateOfBirth());
+        existingAthlete.setGender(athlete.getGender());
+        existingAthlete.setNationality(athlete.getNationality());
+        existingAthlete.setPhoto(athlete.getPhoto());
+        existingAthlete.setRole(athlete.getRole());
+        existingAthlete.setCountry(athlete.getCountry());
+    }
 }
