@@ -1,4 +1,5 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class AthleteService {
     private CountryService countryService;
 
 
-    public void save(Athlete athlete) {
+    public void save(Athlete athlete) throws ElementExistsException {
             athlete.setCountry(countryService.findById(athlete.getNationality()).get());
             athleteRepository.save(athlete);
     }
@@ -55,5 +56,11 @@ public class AthleteService {
         existingAthlete.setPhoto(athlete.getPhoto());
         existingAthlete.setRole(athlete.getRole());
         existingAthlete.setCountry(athlete.getCountry());
+        existingAthlete.setSports(athlete.getSports());
+    }
+
+    public void delete(String badge_number) {
+        Athlete athlete = findById(badge_number);
+        athleteRepository.delete(athlete);
     }
 }

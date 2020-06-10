@@ -1,5 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.CascadeType;
@@ -7,11 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "ATHLETE")
 @Entity
@@ -44,6 +48,10 @@ public class Athlete {
     private String gender;
     @Column(name = "role")
     private String role = "ATHLETE";
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "athletes")
+    Set<Sport> sports;
 
     public Athlete() {
     }
@@ -94,6 +102,15 @@ public class Athlete {
 
     public String getRole() {
         return role;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
+    }
+
+    public Athlete setSports(Set<Sport> sports) {
+        this.sports = sports;
+        return this;
     }
 
     public Athlete setFirstName(String firstName) {
@@ -157,15 +174,16 @@ public class Athlete {
     @Override
     public String toString() {
         return "Athlete{" +
-                "first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", date_of_birth='" + dateOfBirth + '\'' +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
-                ", countryId=" + country +
-                ", badge_number='" + badgeNumber + '\'' +
+                ", country=" + country +
+                ", badgeNumber='" + badgeNumber + '\'' +
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
+                ", sports=" + sports +
                 '}';
     }
 }

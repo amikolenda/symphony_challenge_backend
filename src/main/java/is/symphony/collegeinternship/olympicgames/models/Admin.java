@@ -21,7 +21,7 @@ public class Admin {
 
     public Admin() {
     }
-    public Admin(String userName, String password) {
+    public Admin(@NotNull String userName, String password) {
         this.userName = userName;
         this.password = password;
     }

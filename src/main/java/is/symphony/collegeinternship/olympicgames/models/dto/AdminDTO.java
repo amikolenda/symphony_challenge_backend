@@ -6,13 +6,10 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class AdminDTO {
-    @Column(name = "user_name")
     @NotNull
     @Id
     private String userName;
-    @Column(name = "password")
     private String password;
-    @Column(name = "role")
     private String role = "ADMIN";
 
     public AdminDTO() {
