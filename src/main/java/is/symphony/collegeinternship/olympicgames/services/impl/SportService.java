@@ -7,6 +7,7 @@ import is.symphony.collegeinternship.olympicgames.models.Country;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.SportCountry;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
+import is.symphony.collegeinternship.olympicgames.repositories.SportCountryRepository;
 import is.symphony.collegeinternship.olympicgames.repositories.SportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,16 @@ public class SportService {
     @Autowired
     CountryService countryService;
 
+    @Autowired
+    SportCountryRepository sportCountryRepository;
+
     public void save(Sport sport) throws ElementExistsException {
         Sport newSport = new Sport();
         newSport.setName(sport.getName());
         newSport.setDescription(sport.getDescription());
         newSport.setAthletes(sport.getAthletes());
-        newSport.setSportCountries(sport.getSportCountries());
+        //newSport.setSportCountries(sport.getSportCountries());
+        //setSportCountries(newSport, sport);
 
         sportRepository.save(newSport);
     }
@@ -64,8 +69,8 @@ public class SportService {
         existingSport.setName(sport.getName());
         existingSport.setDescription(sport.getDescription());
         existingSport.setAthletes(sport.getAthletes());
-        existingSport.setSportCountries(sport.getSportCountries());
-        existingSport.setSportCountries(sport.getSportCountries());
+       // existingSport.setSportCountries(sport.getSportCountries());
+        setSportCountries(existingSport, sport);
 
     }
 
@@ -79,8 +84,10 @@ public class SportService {
                     newSportCountry.setSport(newSport);
                     newSportCountry.setName(sportCountry.getName());
                     newSportCountry.setDescription(sportCountry.getDescription());
+                    sportCountryRepository.save(newSportCountry);
                     return newSportCountry;
                 }).collect(Collectors.toSet()));
+        //sportCountryRepository.save(newSportCountry)
 
     }
 

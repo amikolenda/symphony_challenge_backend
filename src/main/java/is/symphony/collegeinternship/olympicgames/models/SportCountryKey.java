@@ -1,22 +1,25 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class SportCountryKey implements Serializable {
+    @Column(name = "sportId")
     private String sportId;
-    String countryShortCode;
+    @Column(name = "countryId")
+    private String countryId;
 
 
 
     public SportCountryKey() {
     }
 
-    public SportCountryKey(String sportId, String countryShortCode) {
+    public SportCountryKey(String sportId, String countryId) {
         this.sportId = sportId;
-        this.countryShortCode = countryShortCode;
+        this.countryId = countryId;
     }
 
     public String getSportId() {
@@ -28,34 +31,34 @@ public class SportCountryKey implements Serializable {
         return this;
     }
 
-    public String getCountryShortCode() {
-        return countryShortCode;
+    public String getCountryId() {
+        return countryId;
     }
 
-    public SportCountryKey setCountryShortCode(String countryShortCode) {
-        this.countryShortCode = countryShortCode;
+    public SportCountryKey setCountryId(String countryId) {
+        this.countryId = countryId;
         return this;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SportCountryKey)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         SportCountryKey that = (SportCountryKey) o;
-        return Objects.equals(getSportId(), that.getSportId()) &&
-                Objects.equals(getCountryShortCode(), that.getCountryShortCode());
+        return sportId.equals(that.sportId) &&
+                countryId.equals(that.countryId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSportId(), getCountryShortCode());
+        return Objects.hash(sportId, countryId);
     }
 
     @Override
     public String toString() {
         return "SportCountryKey{" +
                 "sportId=" + sportId +
-                ", countryShortCode='" + countryShortCode + '\'' +
+                ", countryId='" + countryId + '\'' +
                 '}';
     }
 }

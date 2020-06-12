@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,11 +22,11 @@ public class Country implements Serializable {
 
     @Id
     @Column(name = "countryShortCode")
-    String countryShortCode;
+    private String countryShortCode;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "country")
     @JsonIgnore
-    Set<SportCountry> sportCountries;
+    private Set<SportCountry> sportCountries;
 
     public Country() {
     }

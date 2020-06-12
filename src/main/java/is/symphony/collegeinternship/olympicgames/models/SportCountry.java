@@ -2,13 +2,14 @@ package is.symphony.collegeinternship.olympicgames.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "SPORT_COUNTRY")
@@ -16,15 +17,15 @@ public class SportCountry {
     @EmbeddedId
     private SportCountryKey id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("sportId")
-    @JoinColumn(name = "sport_id")
+    @JoinColumn(name = "sportId")
     @JsonIgnore
     private Sport sport;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId("countryShortCode")
-    @JoinColumn(name = "country_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("countryId")
+    @JoinColumn(name = "countryId"/*, nullable = false, insertable = false, updatable = false*/)
     private Country country;
 
     private String name;
@@ -96,6 +97,19 @@ public class SportCountry {
     public SportCountry setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SportCountry that = (SportCountry) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

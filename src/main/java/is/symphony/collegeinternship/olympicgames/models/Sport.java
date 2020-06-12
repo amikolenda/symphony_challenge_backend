@@ -3,8 +3,7 @@ package is.symphony.collegeinternship.olympicgames.models;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -33,7 +32,7 @@ public class Sport {
             inverseJoinColumns = @JoinColumn(name = "athlete_id", referencedColumnName = "badge_number"))
     private Set<Athlete> athletes;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "sport")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "sport")
     private Set<SportCountry> sportCountries;
 
 

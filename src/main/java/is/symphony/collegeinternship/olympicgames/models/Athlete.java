@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -51,7 +50,7 @@ public class Athlete {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "athletes")
-    Set<Sport> sports;
+    private Set<Sport> sports;
 
     public Athlete() {
     }
