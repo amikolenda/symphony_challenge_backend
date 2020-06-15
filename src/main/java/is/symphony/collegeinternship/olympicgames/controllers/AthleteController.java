@@ -5,6 +5,8 @@ import is.symphony.collegeinternship.olympicgames.exceptions.ResourceNotFoundExc
 import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
 import is.symphony.collegeinternship.olympicgames.services.impl.AthleteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,12 +22,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/athletes")
 public class AthleteController {
+    private static Logger LOGGER = LoggerFactory.getLogger(AthleteController.class);
 
     @Autowired
     private AthleteService athleteService;
 
     @GetMapping
     public ResponseEntity<List<AthleteDTO>> showAthletes() throws ResourceNotFoundException {
+        LOGGER.info("Listing athletes...");
         return ResponseEntity.ok().body(athleteService.findAllDTO());
     }
 

@@ -1,6 +1,8 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 public class AthleteService {
+    private static Logger LOGGER = LoggerFactory.getLogger(AthleteService.class);
 
     @Autowired
     private AthleteRepository athleteRepository;
@@ -25,14 +28,22 @@ public class AthleteService {
 
 
     public void save(Athlete athlete) throws ElementExistsException {
-            athlete.setCountry(countryService.findById(athlete.getNationality()).get());
-            athleteRepository.save(athlete);
+        athlete.setCountry(countryService.findById(athlete.getNationality()).get());
+        Athlete save = athleteRepository.save(athlete);
+        LOGGER.info("Saved {}", save);
     }
 
     public List<AthleteDTO> findAllDTO() throws ResourceNotFoundException {
-        List<AthleteDTO> allAthletes = athleteRepository.findAll().stream().map(dtoConverterService::convertToDTO).collect(Collectors.toList());
-        if (allAthletes.isEmpty()) throw new ResourceNotFoundException();
-        else return allAthletes;
+        LOGGER.info("Accessing DB to get all athletes...");
+
+        List<Athlete> allAthletes = athleteRepository.findAll();
+        LOGGER.info("Found {} athletes!", allAthletes.size());
+        List<AthleteDTO> allAthletesList = allAthletes.stream().map(dtoConverterService::convertToDTO).collect(Collectors.toList());
+        if (allAthletes.isEmpty()) {
+            LOGGER.error("Could not find any athlete!");
+            throw new ResourceNotFoundException();
+        }
+        else return allAthletesList;
     }
     public AthleteDTO findDTOById(String badge_number) throws NoSuchElementException {
         try{

@@ -1,5 +1,7 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import java.util.List;
 @Validated
 @Service
 public class AthleteUploadServiceImpl implements AthleteUploadService {
+    private static Logger LOGGER = LoggerFactory.getLogger(AthleteUploadServiceImpl.class);
+
     @Autowired
     private AthleteRepository athleteRepository;
     @Autowired
@@ -31,6 +35,7 @@ public class AthleteUploadServiceImpl implements AthleteUploadService {
     public void updateAthlete(List<Athlete> athletes) {
         athletes.stream()
                 .forEach(athlete -> {
+                    LOGGER.info("Storing athlete {}", athlete);
                     if (athleteRepository.existsById(athlete.getBadgeNumber())) updateFields(athlete);
                     else athleteService.save(athlete);
                 });
@@ -45,6 +50,7 @@ public class AthleteUploadServiceImpl implements AthleteUploadService {
         if (athlete.getNationality() != null) existingAthlete.setNationality(athlete.getNationality());
         if (athlete.getPhoto() != null) existingAthlete.setPhoto(athlete.getPhoto());
         if (athlete.getGender() != null) existingAthlete.setGender(athlete.getGender());
-        athleteRepository.save(existingAthlete);
+        Athlete save = athleteRepository.save(existingAthlete);
+        LOGGER.info("Stored: {}", athlete);
     }
 }
