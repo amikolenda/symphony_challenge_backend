@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 public class AthleteService {
+
     private static Logger LOGGER = LoggerFactory.getLogger(AthleteService.class);
 
     @Autowired
@@ -28,7 +29,7 @@ public class AthleteService {
 
 
     public void save(Athlete athlete) throws ElementExistsException {
-        athlete.setCountry(countryService.findById(athlete.getNationality()).get());
+        athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
         Athlete save = athleteRepository.save(athlete);
         LOGGER.info("Saved {}", save);
     }
@@ -45,20 +46,29 @@ public class AthleteService {
         }
         else return allAthletesList;
     }
+
     public AthleteDTO findDTOById(String badge_number) throws NoSuchElementException {
         try{
-            return dtoConverterService.convertToDTO(athleteRepository.findById(badge_number).get());
+            LOGGER.info("Accessing DB to get an athlete...");
+            Athlete found = athleteRepository.findById(badge_number).get();
+            LOGGER.info("Athlete found...");
+            return dtoConverterService.convertToDTO(found);
         } catch (Exception e){
+            LOGGER.error("Athlete not found...");
             throw new NoSuchElementException();
         }
     }
 
     public Athlete findById(String badge_number){
-        return athleteRepository.findById(badge_number).get();
+        LOGGER.info("Accessing DB to get an athlete...");
+        Athlete found = athleteRepository.findById(badge_number).get();
+        LOGGER.info("Athlete found...");
+        return found;
     }
 
 
     public void updateAthlete(Athlete existingAthlete, Athlete athlete) {
+        LOGGER.info("Updating an athlete...");
         existingAthlete.setFirstName(athlete.getFirstName());
         existingAthlete.setLastName(athlete.getLastName());
         existingAthlete.setDateOfBirth(athlete.getDateOfBirth());
@@ -68,10 +78,12 @@ public class AthleteService {
         existingAthlete.setRole(athlete.getRole());
         existingAthlete.setCountry(athlete.getCountry());
         existingAthlete.setSports(athlete.getSports());
+        LOGGER.info("Athlete updated...");
     }
 
     public void delete(String badge_number) {
-        Athlete athlete = findById(badge_number);
-        athleteRepository.delete(athlete);
+        LOGGER.info("Deleting an athlete...");
+        athleteRepository.delete(findById(badge_number));
+        LOGGER.info("Athlete deleted..");
     }
 }

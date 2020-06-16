@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -16,20 +16,39 @@ import java.util.Set;
 @Entity
 @Table(name = "COUNTRY")
 public class Country implements Serializable {
+    private static final long serialVersionUID = 3260496944105000322L;
 
-    @Column(name = "countryName")
-    String countryName;
+
+    /*@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private long id;*/
 
     @Id
+    @NotNull
+    @Column(name = "countryName")
+    private String countryName;
+
+
     @Column(name = "countryShortCode")
     private String countryShortCode;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "country")
+    @OneToMany(mappedBy = "country")
     @JsonIgnore
     private Set<SportCountry> sportCountries;
 
     public Country() {
     }
+    /*
+
+    public long getId() {
+        return id;
+    }
+
+    public Country setId(long id) {
+        this.id = id;
+        return this;
+    }*/
 
     public String getCountryName() {
         return countryName;
@@ -58,7 +77,6 @@ public class Country implements Serializable {
         return this;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,7 +96,6 @@ public class Country implements Serializable {
         return "Country{" +
                 "countryName='" + countryName + '\'' +
                 ", countryShortCode='" + countryShortCode + '\'' +
-                ", sportCountries=" + sportCountries +
                 '}';
     }
 }

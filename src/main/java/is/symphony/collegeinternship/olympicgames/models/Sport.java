@@ -11,26 +11,36 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 @Table(name = "SPORT")
 @Entity
-public class Sport {
+public class Sport implements Serializable {
 
+    private static final long serialVersionUID = -5508644022892597453L;
+
+    /*@Id
     @NotNull
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(unique = true)
+    private long id;*/
+
     @Id
-    @Column(name = "sport_name")
+    @Column(name = "sport_name", unique = true)
     private String name;
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
+    @ManyToMany//(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(
             name = "athlete_sport",
-            joinColumns = @JoinColumn(name = "sportId", referencedColumnName = "sport_name"),
+            joinColumns = @JoinColumn(name = "sport_id", referencedColumnName = "sport_name"),
             inverseJoinColumns = @JoinColumn(name = "athlete_id", referencedColumnName = "badge_number"))
     private Set<Athlete> athletes;
+
+
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "sport")
     private Set<SportCountry> sportCountries;
@@ -57,6 +67,16 @@ public class Sport {
         this.athletes = athletes;
         this.sportCountries = sportCountries;
     }
+/*
+    public long getId() {
+        return id;
+    }
+
+    public Sport setId(long id) {
+        this.id = id;
+        return this;
+    }*/
+
 
     public Set<Athlete> getAthletes() {
         return athletes;

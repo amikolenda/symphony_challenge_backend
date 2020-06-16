@@ -13,12 +13,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 @Table(name = "ATHLETE")
 @Entity
-public class Athlete {
+public class Athlete implements Serializable {
+    private static final long serialVersionUID = -6794424089409161547L;
+    
     @Column(name = "first_name")
     @NotNull
     @Size(min = 2)
