@@ -76,8 +76,9 @@ public class AthleteService {
         existingAthlete.setNationality(athlete.getNationality());
         existingAthlete.setPhoto(athlete.getPhoto());
         existingAthlete.setRole(athlete.getRole());
-        existingAthlete.setCountry(athlete.getCountry());
+        existingAthlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
         existingAthlete.setSports(athlete.getSports());
+        athleteRepository.save(existingAthlete);
         LOGGER.info("Athlete updated...");
     }
 

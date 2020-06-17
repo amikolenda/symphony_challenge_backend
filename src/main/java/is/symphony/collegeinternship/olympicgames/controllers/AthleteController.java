@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,17 +36,20 @@ public class AthleteController {
 
     @GetMapping("/{badge_number}")
     public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("badge_number") String badge_number) throws NoSuchElementException {
+        LOGGER.info("Listing an athlete...");
         return ResponseEntity.ok().body(athleteService.findDTOById(badge_number));
     }
     @PutMapping("/{badge_number}")
-    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("badge_number") String badge_number, @RequestBody Athlete athlete) throws NoSuchElementException {
+    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("badge_number") String badge_number, @RequestBody @Valid Athlete athlete) throws NoSuchElementException {
         Athlete existingAthlete = athleteService.findById(badge_number);
+        LOGGER.info("Updating an athlete...");
         athleteService.updateAthlete(existingAthlete, athlete);
         return ResponseEntity.ok().body(athleteService.findDTOById(badge_number));
     }
 
     @DeleteMapping("/{badge_number}")
     public ResponseEntity<String> deleteAthlete(@PathVariable("badge_number") String badge_number) throws NoSuchElementException {
+        LOGGER.info("Deleting an athlete...");
         athleteService.delete(badge_number);
         return ResponseEntity.ok().body("Athlete with badge number: " + badge_number + "is deleted");
     }

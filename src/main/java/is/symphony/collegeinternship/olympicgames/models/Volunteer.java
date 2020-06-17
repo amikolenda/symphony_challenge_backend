@@ -1,19 +1,34 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
-import javax.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "VOLUNTEER")
 @Entity
 public class Volunteer {
+
+    @Column(name = "user_name")
+    @NotNull
+    @Id
+    private String userName;
+
+    @Column(name = "password")
+    @NotNull
+   // @Size(min = 59, max = 61)
+    private String password;
+
     @Column(name = "first_name")
     @NotNull
     @Size(min = 2)
@@ -23,27 +38,26 @@ public class Volunteer {
     @Size(min = 2)
     private String lastName;
     @Column(name = "date_of_birth")
-    @NotNull
     private String dateOfBirth;
     @Column(name = "nationality")
     private String nationality;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
-    @Column(name = "user_name")
-    @NotNull
-    @Id
-    private String userName;
+
     @Column(name = "photo")
     private String photo;
     @Column(name = "gender")
     private String gender;
     @Column(name = "role")
     private String role = "VOLUNTEER";
-    @Column(name = "password")
-    private String password;
+
+
+    @ManyToMany(mappedBy = "volunteers")
+    @JsonIgnore
+    private Set<Sport> sports;
 
     public Volunteer() {
     }
@@ -64,6 +78,16 @@ public class Volunteer {
         return this;
     }
 
+    public Set<Sport> getSports() {
+        return sports;
+    }
+
+    public Volunteer setSports(Set<Sport> sports) {
+        this.sports = sports;
+        return this;
+    }
+
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -72,7 +96,7 @@ public class Volunteer {
         this.firstName = firstName;
         return this;
     }
-
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
@@ -81,7 +105,7 @@ public class Volunteer {
         this.lastName = lastName;
         return this;
     }
-
+    @JsonProperty("date_of_birth")
     public String getDateOfBirth() {
         return dateOfBirth;
     }
@@ -108,7 +132,7 @@ public class Volunteer {
         this.country = country;
         return this;
     }
-
+    @JsonProperty("user_name")
     public String getUserName() {
         return userName;
     }

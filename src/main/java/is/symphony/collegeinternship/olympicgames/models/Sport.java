@@ -1,9 +1,7 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,7 +26,7 @@ public class Sport implements Serializable {
     private long id;*/
 
     @Id
-    @Column(name = "sport_name", unique = true)
+    @Column(name = "sport_name")
     private String name;
     @Column(name = "description")
     private String description;
@@ -41,8 +39,14 @@ public class Sport implements Serializable {
     private Set<Athlete> athletes;
 
 
+    @ManyToMany
+    @JoinTable(
+            name = "volunteer_sport",
+            joinColumns = @JoinColumn(name = "sport_id", referencedColumnName = "sport_name"),
+            inverseJoinColumns = @JoinColumn(name = "volunteer_id", referencedColumnName = "user_name"))
+    private Set<Volunteer> volunteers;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "sport")
+    @OneToMany(mappedBy = "sport")
     private Set<SportCountry> sportCountries;
 
 
@@ -77,16 +81,6 @@ public class Sport implements Serializable {
         return this;
     }*/
 
-
-    public Set<Athlete> getAthletes() {
-        return athletes;
-    }
-
-    public Sport setAthletes(Set<Athlete> athletes) {
-        this.athletes = athletes;
-        return this;
-    }
-
     public String getName() {
         return name;
     }
@@ -102,6 +96,24 @@ public class Sport implements Serializable {
 
     public Sport setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public Set<Athlete> getAthletes() {
+        return athletes;
+    }
+
+    public Sport setAthletes(Set<Athlete> athletes) {
+        this.athletes = athletes;
+        return this;
+    }
+
+    public Set<Volunteer> getVolunteers() {
+        return volunteers;
+    }
+
+    public Sport setVolunteers(Set<Volunteer> volunteers) {
+        this.volunteers = volunteers;
         return this;
     }
 
@@ -133,6 +145,7 @@ public class Sport implements Serializable {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", athletes=" + athletes +
+                ", volunteers=" + volunteers +
                 ", sportCountries=" + sportCountries +
                 '}';
     }

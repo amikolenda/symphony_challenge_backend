@@ -3,7 +3,6 @@ package is.symphony.collegeinternship.olympicgames.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,7 +20,7 @@ import java.util.Set;
 @Entity
 public class Athlete implements Serializable {
     private static final long serialVersionUID = -6794424089409161547L;
-    
+
     @Column(name = "first_name")
     @NotNull
     @Size(min = 2)
@@ -36,7 +35,7 @@ public class Athlete implements Serializable {
     @Column(name = "nationality")
     private String nationality;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 

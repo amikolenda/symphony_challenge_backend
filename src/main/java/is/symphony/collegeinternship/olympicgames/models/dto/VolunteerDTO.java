@@ -1,15 +1,19 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.models.Sport;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 public class VolunteerDTO {
     @Column(name = "first_name")
@@ -26,7 +30,7 @@ public class VolunteerDTO {
     @Column(name = "nationality")
     private String nationality;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
@@ -43,6 +47,10 @@ public class VolunteerDTO {
     @Column(name = "password")
     private String password;
 
+    @ManyToMany(mappedBy = "volunteers")
+    private Set<Sport> sports;
+
+
     public VolunteerDTO() {
     }
     public VolunteerDTO(String firstName, String lastName, String userName, String password, String nationality) {
@@ -51,6 +59,15 @@ public class VolunteerDTO {
         this.userName = userName;
         this.password = password;
         this.nationality = nationality;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
+    }
+
+    public VolunteerDTO setSports(Set<Sport> sports) {
+        this.sports = sports;
+        return this;
     }
 
     public String getFirstName() {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,14 +35,14 @@ public class SportController {
     }
 
     @PostMapping
-    public ResponseEntity<SportDTO> createSport(@RequestBody Sport sport){
+    public ResponseEntity<SportDTO> createSport(@RequestBody @Valid Sport sport){
         sportService.save(sport);
         return ResponseEntity.ok().body(sportService.findDTOByName(sport.getName()));
     }
 
 
     @PutMapping("/{name}")
-    public ResponseEntity<SportDTO> updateSport(@PathVariable("name") String name, @RequestBody Sport sport) throws NoSuchElementException {
+    public ResponseEntity<SportDTO> updateSport(@PathVariable("name") String name, @RequestBody @Valid Sport sport) throws NoSuchElementException {
         Sport existingSport = sportService.findByName(name);
         sportService.updateSport(existingSport, sport);
         return ResponseEntity.ok().body(sportService.findDTOByName(name));

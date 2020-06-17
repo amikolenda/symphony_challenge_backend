@@ -6,6 +6,7 @@ import is.symphony.collegeinternship.olympicgames.models.Country;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,7 +15,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AthleteDetailsImpl implements UserDetails {
-
+    @JsonIgnore
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private String username;
 
     @JsonIgnore
@@ -40,14 +42,14 @@ public class AthleteDetailsImpl implements UserDetails {
     public AthleteDetailsImpl(String username, String password,
                               Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
         this.authorities = authorities;
     }
 
     public AthleteDetailsImpl(String username, String password,
                               Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String nationality, Country country, String photo, String gender) {
         this.username = username;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
         this.authorities = authorities;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -3,8 +3,7 @@ package is.symphony.collegeinternship.olympicgames.models.dto;
 
 import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.SportCountry;
-
-import javax.persistence.CascadeType;
+import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -20,8 +19,11 @@ public class SportDTO {
     @OneToMany(mappedBy = "sport")
     private Set<SportCountry> sportCountries;
 
-    @ManyToMany(mappedBy = "sports")
+    @ManyToMany(mappedBy = "athletes")
     private Set<Athlete> athletes;
+
+    @ManyToMany(mappedBy = "volunteers")
+    private Set<Volunteer> volunteers;
 
     public SportDTO() {
     }
@@ -37,6 +39,15 @@ public class SportDTO {
 
     public SportDTO setAthletes(Set<Athlete> athletes) {
         this.athletes = athletes;
+        return this;
+    }
+
+    public Set<Volunteer> getVolunteers() {
+        return volunteers;
+    }
+
+    public SportDTO setVolunteers(Set<Volunteer> volunteers) {
+        this.volunteers = volunteers;
         return this;
     }
 

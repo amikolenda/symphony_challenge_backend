@@ -29,14 +29,14 @@ public class SportService {
 
 
     public void save(Sport sport) throws ElementExistsException {
-        Sport newSport = new Sport();
+        /*Sport newSport = new Sport();
         newSport.setName(sport.getName());
-        newSport.setDescription(sport.getDescription());
-        newSport.setAthletes(sport.getAthletes());
+        newSport.setDescription(sport.getDescription()); */
+        //newSport.setAthletes(sport.getAthletes());
         //newSport.setSportCountries(sport.getSportCountries());
 
-        Sport save = sportRepository.save(newSport);
-        LOGGER.info("Saved {}", save);
+       Sport save = sportRepository.save(sport);
+       LOGGER.info("Saved {}", save);
     }
 
     public List<SportDTO> findAllDTO() throws ResourceNotFoundException {

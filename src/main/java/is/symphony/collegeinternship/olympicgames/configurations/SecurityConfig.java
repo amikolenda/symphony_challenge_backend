@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserDetailsServiceImpl athleteDetailsService;
+    UserDetailsServiceImpl detailsService;
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -32,8 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
-        authenticationManagerBuilder.userDetailsService(athleteDetailsService);
-
+        authenticationManagerBuilder.userDetailsService(detailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -51,9 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                //.antMatchers("/api/volunteers/**").hasAnyAuthority("ADMIN","VOLUNTEER")
                 //.antMatchers("/api/sports/**").hasAnyAuthority("ADMIN","VOLUNTEER")
-                .antMatchers("/api/athletes/**").hasAnyAuthority("ATHLETE","ADMIN")
-                .antMatchers("/resources/**","/h2-console/**","/api/upload","/login","/api/sports/**").permitAll()
+                //.antMatchers("/api/athletes/**").hasAnyAuthority("ATHLETE","ADMIN")
+                .antMatchers("/resources/**","/h2-console/**","/api/upload","/login","/signup","/api/athletes/**","/api/volunteers/**","/api/sports/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authorizeRequests()
@@ -64,9 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
 }
 
 

@@ -1,7 +1,9 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.models.Sport;
+import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
+import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,10 @@ public class DTOConverterService {
 
     public SportDTO convertSportDTO(Sport sport){
         return modelMapper.map(sport, SportDTO.class);
+    }
+
+    public VolunteerDTO convertVolunteerDTO(Volunteer volunteer){
+        return modelMapper.map(volunteer, VolunteerDTO.class);
     }
 
 }

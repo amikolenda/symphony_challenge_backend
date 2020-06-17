@@ -16,16 +16,16 @@ public class SportCountry implements Serializable {
 
     private static final long serialVersionUID = 6753465193828742873L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "sport")
+    @JoinColumn(name = "sport_id")
     @JsonIgnore
     private Sport sport;
 
     @ManyToOne
-    @JoinColumn(name = "country")
+    @JoinColumn(name = "country_id")
     private Country country;
 
     private String name;

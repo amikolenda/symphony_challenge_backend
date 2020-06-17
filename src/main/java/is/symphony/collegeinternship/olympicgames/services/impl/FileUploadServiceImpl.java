@@ -29,7 +29,6 @@ import static is.symphony.collegeinternship.olympicgames.utils.FileUtility.valid
 public class FileUploadServiceImpl implements FileUploadService {
     private static Logger LOGGER = LoggerFactory.getLogger(FileUploadServiceImpl.class);
 
-
     @Autowired
     private AthleteUploadServiceImpl athleteUploadServiceImpl;
 
