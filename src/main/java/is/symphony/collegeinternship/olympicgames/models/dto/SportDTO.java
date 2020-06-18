@@ -2,33 +2,23 @@ package is.symphony.collegeinternship.olympicgames.models.dto;
 
 
 import is.symphony.collegeinternship.olympicgames.models.Athlete;
-import is.symphony.collegeinternship.olympicgames.models.SportCountry;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
 public class SportDTO {
 
-    @NotNull
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "sport")
-    private Set<SportCountry> sportCountries;
-
-    @ManyToMany(mappedBy = "athletes")
     private Set<Athlete> athletes;
 
-    @ManyToMany(mappedBy = "volunteers")
     private Set<Volunteer> volunteers;
 
     public SportDTO() {
     }
 
-    public SportDTO(@NotNull String name, String description) {
+    public SportDTO(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -48,15 +38,6 @@ public class SportDTO {
 
     public SportDTO setVolunteers(Set<Volunteer> volunteers) {
         this.volunteers = volunteers;
-        return this;
-    }
-
-    public Set<SportCountry> getSportCountries() {
-        return sportCountries;
-    }
-
-    public SportDTO setSportCountries(Set<SportCountry> sportCountries) {
-        this.sportCountries = sportCountries;
         return this;
     }
 
@@ -96,8 +77,8 @@ public class SportDTO {
         return "SportDTO{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", sportCountries=" + sportCountries +
                 ", athletes=" + athletes +
+                ", volunteers=" + volunteers +
                 '}';
     }
 }

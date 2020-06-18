@@ -28,7 +28,7 @@ public class CountryService {
         for (Country country:countries) countryRepository.save(country);
     }
 
-    public Optional<Country> findById(String id) {
+    public Optional<Country> findById(Long id) {
         try {
             LOGGER.info("Accessing DB to get a country...");
             Optional<Country> found = countryRepository.findById(id);

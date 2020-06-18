@@ -36,14 +36,14 @@ public class AthleteUploadServiceImpl implements AthleteUploadService {
         athletes.stream()
                 .forEach(athlete -> {
                     LOGGER.info("Storing athlete {}", athlete);
-                    if (athleteRepository.existsById(athlete.getBadgeNumber())) updateFields(athlete);
+                    if (athleteRepository.existsByBadgeNumber(athlete.getBadgeNumber())) updateFields(athlete);
                     else athleteService.save(athlete);
                 });
     }
 
     @Override
     public void updateFields(Athlete athlete){
-        Athlete existingAthlete = athleteRepository.findById(athlete.getBadgeNumber()).get();
+        Athlete existingAthlete = athleteRepository.findByBadgeNumber(athlete.getBadgeNumber());
         if (athlete.getFirstName() != null) existingAthlete.setFirstName(athlete.getFirstName());
         if (athlete.getLastName() != null) existingAthlete.setLastName(athlete.getLastName());
         if (athlete.getDateOfBirth() != null) existingAthlete.setDateOfBirth(athlete.getDateOfBirth());

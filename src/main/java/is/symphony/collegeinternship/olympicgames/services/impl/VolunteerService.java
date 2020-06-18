@@ -52,20 +52,11 @@ public class VolunteerService {
         else return allVolunteers;
     }
 
-    public void updateVolunteer(Volunteer existingVolunteer, Volunteer volunteer) {
-        existingVolunteer.setUserName(volunteer.getUserName());
+    public void updateVolunteer(Volunteer volunteer) {
         String password = passwordEncoder.encode(volunteer.getPassword());
-        existingVolunteer.setPassword(password);
-        existingVolunteer.setFirstName(volunteer.getFirstName());
-        existingVolunteer.setLastName(volunteer.getLastName());
-        existingVolunteer.setDateOfBirth(volunteer.getDateOfBirth());
-        existingVolunteer.setGender(volunteer.getGender());
-        existingVolunteer.setNationality(volunteer.getNationality());
-        existingVolunteer.setPhoto(volunteer.getPhoto());
-        existingVolunteer.setRole(volunteer.getRole());
-        existingVolunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
-        existingVolunteer.setSports(volunteer.getSports());
-        volunteerRepository.save(existingVolunteer);
+        volunteer.setPassword(password);
+        volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
+        volunteerRepository.save(volunteer);
     }
 
     public void delete(String userName) {

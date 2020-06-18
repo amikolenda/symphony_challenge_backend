@@ -1,12 +1,17 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,35 +24,33 @@ public class Sport implements Serializable {
 
     private static final long serialVersionUID = -5508644022892597453L;
 
-    /*@Id
-    @NotNull
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(unique = true)
-    private long id;*/
-
     @Id
-    @Column(name = "sport_name")
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @JsonIgnore
+    private Long id;
+
+    @Column(name = "sport_name", unique = true)
     private String name;
     @Column(name = "description")
     private String description;
 
-    @ManyToMany//(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "athlete_sport",
-            joinColumns = @JoinColumn(name = "sport_id", referencedColumnName = "sport_name"),
-            inverseJoinColumns = @JoinColumn(name = "athlete_id", referencedColumnName = "badge_number"))
+            joinColumns = @JoinColumn(name = "sport_id"),
+            inverseJoinColumns = @JoinColumn(name = "athlete_id"))
     private Set<Athlete> athletes;
 
 
     @ManyToMany
     @JoinTable(
             name = "volunteer_sport",
-            joinColumns = @JoinColumn(name = "sport_id", referencedColumnName = "sport_name"),
-            inverseJoinColumns = @JoinColumn(name = "volunteer_id", referencedColumnName = "user_name"))
+            joinColumns = @JoinColumn(name = "sport_id"),
+            inverseJoinColumns = @JoinColumn(name = "volunteer_id"))
     private Set<Volunteer> volunteers;
 
-    @OneToMany(mappedBy = "sport")
-    private Set<SportCountry> sportCountries;
+    /*@OneToMany(mappedBy = "sport")
+    private Set<SportCountry> sportCountries;*/
 
 
     public Sport() {
@@ -65,21 +68,21 @@ public class Sport implements Serializable {
         this.description = description;
         this.athletes = athletes;
     }
-    public Sport(@NotNull String name, String description,Set<Athlete> athletes, Set<SportCountry> sportCountries) {
+   /* public Sport(@NotNull String name, String description,Set<Athlete> athletes, Set<SportCountry> sportCountries) {
         this.name = name;
         this.description = description;
         this.athletes = athletes;
         this.sportCountries = sportCountries;
-    }
-/*
-    public long getId() {
+    }*/
+
+    public Long getId() {
         return id;
     }
 
-    public Sport setId(long id) {
+    public Sport setId(Long id) {
         this.id = id;
         return this;
-    }*/
+    }
 
     public String getName() {
         return name;
@@ -117,14 +120,14 @@ public class Sport implements Serializable {
         return this;
     }
 
-    public Set<SportCountry> getSportCountries() {
+    /*public Set<SportCountry> getSportCountries() {
         return sportCountries;
     }
 
     public Sport setSportCountries(Set<SportCountry> sportCountries) {
         this.sportCountries = sportCountries;
         return this;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -139,14 +142,5 @@ public class Sport implements Serializable {
         return Objects.hash(name);
     }
 
-    @Override
-    public String toString() {
-        return "Sport{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", athletes=" + athletes +
-                ", volunteers=" + volunteers +
-                ", sportCountries=" + sportCountries +
-                '}';
-    }
+
 }

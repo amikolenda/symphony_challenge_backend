@@ -37,14 +37,13 @@ public class AthleteController {
     @GetMapping("/{badge_number}")
     public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("badge_number") String badge_number) throws NoSuchElementException {
         LOGGER.info("Listing an athlete...");
-        return ResponseEntity.ok().body(athleteService.findDTOById(badge_number));
+        return ResponseEntity.ok().body(athleteService.findDTOByBadgeNumber(badge_number));
     }
     @PutMapping("/{badge_number}")
     public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("badge_number") String badge_number, @RequestBody @Valid Athlete athlete) throws NoSuchElementException {
-        Athlete existingAthlete = athleteService.findById(badge_number);
         LOGGER.info("Updating an athlete...");
-        athleteService.updateAthlete(existingAthlete, athlete);
-        return ResponseEntity.ok().body(athleteService.findDTOById(badge_number));
+        athleteService.updateAthlete(athlete);
+        return ResponseEntity.ok().body(athleteService.findDTOByBadgeNumber(badge_number));
     }
 
     @DeleteMapping("/{badge_number}")

@@ -19,6 +19,11 @@ import java.util.Set;
 @Entity
 public class Volunteer {
 
+    /*@Id
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @JsonIgnore
+    private Long id;*/
+
     @Column(name = "user_name")
     @NotNull
     @Id
@@ -54,9 +59,8 @@ public class Volunteer {
     @Column(name = "role")
     private String role = "VOLUNTEER";
 
-
-    @ManyToMany(mappedBy = "volunteers")
     @JsonIgnore
+    @ManyToMany(mappedBy = "volunteers")
     private Set<Sport> sports;
 
     public Volunteer() {

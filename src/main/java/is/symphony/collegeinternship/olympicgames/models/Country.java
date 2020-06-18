@@ -3,12 +3,7 @@ package is.symphony.collegeinternship.olympicgames.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -16,39 +11,22 @@ import java.util.Set;
 @Entity
 @Table(name = "COUNTRY")
 public class Country implements Serializable {
-    private static final long serialVersionUID = 3260496944105000322L;
 
-
-    /*@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private long id;*/
+    private static final long serialVersionUID = 1121259828541782353L;
 
     @Id
-    @NotNull
-    @Column(name = "countryName")
-    private String countryName;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @JsonIgnore
+    private Long id;
 
+    @Column(name = "countryName")
+    String countryName;
 
     @Column(name = "countryShortCode")
     private String countryShortCode;
 
-    @OneToMany(mappedBy = "country")
-    @JsonIgnore
-    private Set<SportCountry> sportCountries;
-
     public Country() {
     }
-    /*
-
-    public long getId() {
-        return id;
-    }
-
-    public Country setId(long id) {
-        this.id = id;
-        return this;
-    }*/
 
     public String getCountryName() {
         return countryName;
@@ -68,12 +46,12 @@ public class Country implements Serializable {
         return this;
     }
 
-    public Set<SportCountry> getSportCountries() {
-        return sportCountries;
+    public Long getId() {
+        return id;
     }
 
-    public Country setSportCountries(Set<SportCountry> sportCountries) {
-        this.sportCountries = sportCountries;
+    public Country setId(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -94,7 +72,8 @@ public class Country implements Serializable {
     @Override
     public String toString() {
         return "Country{" +
-                "countryName='" + countryName + '\'' +
+                "id=" + id +
+                ", countryName='" + countryName + '\'' +
                 ", countryShortCode='" + countryShortCode + '\'' +
                 '}';
     }

@@ -30,7 +30,7 @@ class AthleteControllerTest {
         athleteService.save(athlete);
         Athlete athlete1 = new Athlete("Mary","Miller", "2222", "02-11-1887","CA");
         athleteService.save(athlete1);
-        when(athleteService.findById(athlete.getBadgeNumber())).thenReturn(athlete);
+        when(athleteService.findByBadgeNumber(athlete.getBadgeNumber())).thenReturn(athlete);
 
         webTestClient.get()
                 .uri("/athletes")

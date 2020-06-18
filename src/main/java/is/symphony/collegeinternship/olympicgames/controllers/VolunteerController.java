@@ -34,8 +34,7 @@ public class VolunteerController {
 
     @PutMapping("/{userName}")
     public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable("userName") String userName, @RequestBody @Valid Volunteer volunteer){
-        Volunteer existingVolunteer = volunteerService.findById(userName);
-        volunteerService.updateVolunteer(existingVolunteer, volunteer);
+        volunteerService.updateVolunteer(volunteer);
         return ResponseEntity.ok().body(volunteerService.findDTOById(userName));
     }
     @DeleteMapping("/{userName}")

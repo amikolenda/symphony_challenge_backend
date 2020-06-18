@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<Athlete> athlete = athleteRepository.findById(userName);
+        Optional<Athlete> athlete = Optional.ofNullable(athleteRepository.findByBadgeNumber(userName));
         Optional<Admin> admin = adminRepository.findById(userName);
         Optional<Volunteer> volunteer = volunteerRepository.findById(userName);
         if (athlete.isPresent()) return AthleteDetailsImpl.build(athlete.get());

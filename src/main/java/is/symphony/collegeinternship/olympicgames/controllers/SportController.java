@@ -43,8 +43,7 @@ public class SportController {
 
     @PutMapping("/{name}")
     public ResponseEntity<SportDTO> updateSport(@PathVariable("name") String name, @RequestBody @Valid Sport sport) throws NoSuchElementException {
-        Sport existingSport = sportService.findByName(name);
-        sportService.updateSport(existingSport, sport);
+        sportService.updateSport(sport);
         return ResponseEntity.ok().body(sportService.findDTOByName(name));
     }
 

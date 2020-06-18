@@ -29,12 +29,7 @@ public class SportService {
 
 
     public void save(Sport sport) throws ElementExistsException {
-        /*Sport newSport = new Sport();
-        newSport.setName(sport.getName());
-        newSport.setDescription(sport.getDescription()); */
-        //newSport.setAthletes(sport.getAthletes());
-        //newSport.setSportCountries(sport.getSportCountries());
-
+        LOGGER.info("Saving sport...");
        Sport save = sportRepository.save(sport);
        LOGGER.info("Saved {}", save);
     }
@@ -55,10 +50,10 @@ public class SportService {
         try{
             LOGGER.info("Accessing DB to get a sport...");
             Sport found = sportRepository.findSportByName(name);
-            LOGGER.info("Sport found...");
+            LOGGER.info("Sport found.");
             return dtoConverterService.convertSportDTO(found);
         } catch (Exception e){
-            LOGGER.info("Sport not found...");
+            LOGGER.info("Sport not found.");
             throw new NoSuchElementException();
         }
     }
@@ -66,10 +61,10 @@ public class SportService {
         try{
             LOGGER.info("Accessing DB to get a sport...");
             Sport found = sportRepository.findSportByName(name);
-            LOGGER.info("Sport found...");
+            LOGGER.info("Sport found.");
             return found;
         } catch (Exception e){
-            LOGGER.error("Sport not found...");
+            LOGGER.error("Sport not found.");
             throw new NoSuchElementException();
         }
     }
@@ -79,16 +74,13 @@ public class SportService {
         Sport sport = findByName(name);
         LOGGER.info("Deleting sport...");
         sportRepository.delete(sport);
-        LOGGER.info("Sport deleted...");
+        LOGGER.info("Sport deleted.");
     }
 
-    public void updateSport(Sport existingSport, Sport sport){
+    public void updateSport(Sport sport){
         LOGGER.info("Updating sport...");
-        existingSport.setName(sport.getName());
-        existingSport.setDescription(sport.getDescription());
-        existingSport.setAthletes(sport.getAthletes());
-        existingSport.setSportCountries(sport.getSportCountries());
-        LOGGER.info("Sport updated...");
+        sportRepository.save(sport);
+        LOGGER.info("Sport updated.");
 
     }
 

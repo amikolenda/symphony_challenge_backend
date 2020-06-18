@@ -21,6 +21,11 @@ import java.util.Set;
 public class Athlete implements Serializable {
     private static final long serialVersionUID = -6794424089409161547L;
 
+    /*@Id
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @JsonIgnore
+    private Long id;*/
+
     @Column(name = "first_name")
     @NotNull
     @Size(min = 2)

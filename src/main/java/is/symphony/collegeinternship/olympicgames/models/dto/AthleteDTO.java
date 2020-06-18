@@ -1,15 +1,10 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -35,8 +30,6 @@ public class AthleteDTO {
     private String nationality;
 
     @JsonProperty("country")
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
     @NotNull
@@ -52,6 +45,9 @@ public class AthleteDTO {
 
     @JsonProperty("role")
     private String role = "ATHLETE";
+
+    @JsonIgnore
+    private Set<Sport> sports;
 
 
     public AthleteDTO() {
@@ -104,6 +100,15 @@ public class AthleteDTO {
 
     public Country getCountry() {
         return country;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
+    }
+
+    public AthleteDTO setSports(Set<Sport> sports) {
+        this.sports = sports;
+        return this;
     }
 
     public AthleteDTO setFirstName(String firstName) {

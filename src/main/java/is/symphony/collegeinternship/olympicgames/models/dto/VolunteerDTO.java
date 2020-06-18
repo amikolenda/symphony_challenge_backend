@@ -47,9 +47,6 @@ public class VolunteerDTO {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(mappedBy = "volunteers")
-    private Set<Sport> sports;
-
 
     public VolunteerDTO() {
     }
@@ -59,15 +56,6 @@ public class VolunteerDTO {
         this.userName = userName;
         this.password = password;
         this.nationality = nationality;
-    }
-
-    public Set<Sport> getSports() {
-        return sports;
-    }
-
-    public VolunteerDTO setSports(Set<Sport> sports) {
-        this.sports = sports;
-        return this;
     }
 
     public String getFirstName() {
