@@ -1,30 +1,21 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Table(name = "ATHLETE")
 @Entity
 public class Athlete implements Serializable {
     private static final long serialVersionUID = -6794424089409161547L;
 
-    /*@Id
+    @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    @JsonIgnore
-    private Long id;*/
+    private Long id;
 
     @Column(name = "first_name")
     @NotNull
@@ -46,7 +37,6 @@ public class Athlete implements Serializable {
 
     @Column(name = "badge_number")
     @NotNull
-    @Id
     private String badgeNumber;
     @Column(name = "photo")
     private String photo;
@@ -55,19 +45,12 @@ public class Athlete implements Serializable {
     @Column(name = "role")
     private String role = "ATHLETE";
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "athletes")
-    private Set<Sport> sports;
+    @ManyToOne
+    private Sport sport;
 
     public Athlete() {
     }
-    public Athlete(String firstName, String lastName, String badgeNumber, String dateOfBirth, String nationality) {
-        this.badgeNumber = badgeNumber;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.dateOfBirth = dateOfBirth;
-        this.nationality = nationality;
-    }
+
     @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
@@ -110,12 +93,21 @@ public class Athlete implements Serializable {
         return role;
     }
 
-    public Set<Sport> getSports() {
-        return sports;
+    public Long getId() {
+        return id;
     }
 
-    public Athlete setSports(Set<Sport> sports) {
-        this.sports = sports;
+    public Athlete setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Sport getSport() {
+        return sport;
+    }
+
+    public Athlete setSport(Sport sport) {
+        this.sport = sport;
         return this;
     }
 
@@ -180,7 +172,8 @@ public class Athlete implements Serializable {
     @Override
     public String toString() {
         return "Athlete{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
@@ -189,7 +182,7 @@ public class Athlete implements Serializable {
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
-                ", sports=" + sports +
+                ", sport=" + sport +
                 '}';
     }
 }

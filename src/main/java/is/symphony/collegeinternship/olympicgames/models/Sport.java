@@ -2,21 +2,14 @@ package is.symphony.collegeinternship.olympicgames.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
 
 @Table(name = "SPORT")
 @Entity
@@ -26,7 +19,6 @@ public class Sport implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    @JsonIgnore
     private Long id;
 
     @Column(name = "sport_name", unique = true)
@@ -34,23 +26,12 @@ public class Sport implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-            name = "athlete_sport",
-            joinColumns = @JoinColumn(name = "sport_id"),
-            inverseJoinColumns = @JoinColumn(name = "athlete_id"))
+    @OneToMany
     private Set<Athlete> athletes;
 
-
-    @ManyToMany
-    @JoinTable(
-            name = "volunteer_sport",
-            joinColumns = @JoinColumn(name = "sport_id"),
-            inverseJoinColumns = @JoinColumn(name = "volunteer_id"))
+    @OneToMany(cascade = ALL)
+    @JoinColumn(name ="id")
     private Set<Volunteer> volunteers;
-
-    /*@OneToMany(mappedBy = "sport")
-    private Set<SportCountry> sportCountries;*/
 
 
     public Sport() {
