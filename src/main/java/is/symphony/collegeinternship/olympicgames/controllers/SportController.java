@@ -1,8 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.controllers;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
-import is.symphony.collegeinternship.olympicgames.exceptions.ResourceNotFoundException;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.services.impl.SportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class SportController {
     SportService sportService;
 
     @GetMapping
-    public ResponseEntity<List<SportDTO>> showSports() throws ResourceNotFoundException {
+    public ResponseEntity<List<SportDTO>> showSports() throws NoSuchElementException {
         return ResponseEntity.ok().body(sportService.findAllDTO());
     }
     @GetMapping("/{name}")
@@ -35,16 +33,14 @@ public class SportController {
     }
 
     @PostMapping
-    public ResponseEntity<SportDTO> createSport(@RequestBody @Valid Sport sport){
-        sportService.save(sport);
-        return ResponseEntity.ok().body(sportService.findDTOByName(sport.getName()));
+    public ResponseEntity<SportDTO> createSport(@RequestBody @Valid SportDTO sportDTO){
+        return ResponseEntity.ok().body(sportService.save(sportDTO));
     }
 
 
     @PutMapping("/{name}")
-    public ResponseEntity<SportDTO> updateSport(@PathVariable("name") String name, @RequestBody @Valid Sport sport) throws NoSuchElementException {
-        sportService.updateSport(sport);
-        return ResponseEntity.ok().body(sportService.findDTOByName(name));
+    public ResponseEntity<SportDTO> updateSport(@PathVariable("name") String name, @RequestBody @Valid SportDTO sportDTO) throws NoSuchElementException {
+        return ResponseEntity.ok().body(sportService.updateSport(sportDTO));
     }
 
     @DeleteMapping("/{name}")

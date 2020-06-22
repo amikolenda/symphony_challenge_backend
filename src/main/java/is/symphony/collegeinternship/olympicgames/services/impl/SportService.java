@@ -2,7 +2,6 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
-import is.symphony.collegeinternship.olympicgames.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
@@ -28,13 +27,19 @@ public class SportService {
     CountryService countryService;
 
 
-    public void save(Sport sport) throws ElementExistsException {
+    public SportDTO save(SportDTO sportDTO) throws ElementExistsException {
+        if (sportRepository.existsByName(sportDTO.getName())) {
+            LOGGER.error("Sport already exists!");
+            throw new ElementExistsException();
+        }
         LOGGER.info("Saving sport...");
-       Sport save = sportRepository.save(sport);
-       LOGGER.info("Saved {}", save);
+        Sport sport = dtoConverterService.convertSportDTOToDAO(sportDTO);
+        Sport save = sportRepository.save(sport);
+        LOGGER.info("Saved {}", save);
+        return dtoConverterService.convertSportDTO(save);
     }
 
-    public List<SportDTO> findAllDTO() throws ResourceNotFoundException {
+    public List<SportDTO> findAllDTO() throws NoSuchElementException {
         LOGGER.info("Accessing DB to get all sports...");
         List<Sport> allSports = sportRepository.findAll();
         LOGGER.info("Found {} sports!", allSports.size());
@@ -42,7 +47,7 @@ public class SportService {
         List<SportDTO> allSportsList = sportRepository.findAll().stream().map(dtoConverterService::convertSportDTO).collect(Collectors.toList());
         if (allSportsList.isEmpty()){
             LOGGER.error("Could not find any sport!");
-            throw new ResourceNotFoundException();
+            throw new NoSuchElementException();
         }
         else return allSportsList;
     }
@@ -57,7 +62,7 @@ public class SportService {
             throw new NoSuchElementException();
         }
     }
-    public Sport findByName(String name) throws NoSuchElementException{
+    public Sport findByName(String name) throws NoSuchElementException {
         try{
             LOGGER.info("Accessing DB to get a sport...");
             Sport found = sportRepository.findSportByName(name);
@@ -69,7 +74,7 @@ public class SportService {
         }
     }
 
-    public void delete(String name) throws NoSuchElementException{
+    public void delete(String name) throws NoSuchElementException {
         LOGGER.info("Accessing DB to get a sport...");
         Sport sport = findByName(name);
         LOGGER.info("Deleting sport...");
@@ -77,10 +82,15 @@ public class SportService {
         LOGGER.info("Sport deleted.");
     }
 
-    public void updateSport(Sport sport){
+    public SportDTO updateSport(SportDTO sportDTO) throws NoSuchElementException {
+        if (!sportRepository.existsByName(sportDTO.getName())) {
+            LOGGER.error("Sport does not exist!");
+            throw new NoSuchElementException();
+        }
         LOGGER.info("Updating sport...");
-        sportRepository.save(sport);
-        LOGGER.info("Sport updated.");
+        Sport update = sportRepository.save(dtoConverterService.convertSportDTOToDAO(sportDTO));
+        LOGGER.info("Updated {}", update);
+        return dtoConverterService.convertSportDTO(update);
 
     }
 

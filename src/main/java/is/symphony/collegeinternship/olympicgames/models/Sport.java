@@ -1,7 +1,5 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -9,7 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.PERSIST;
 
 @Table(name = "SPORT")
 @Entity
@@ -49,12 +46,6 @@ public class Sport implements Serializable {
         this.description = description;
         this.athletes = athletes;
     }
-   /* public Sport(@NotNull String name, String description,Set<Athlete> athletes, Set<SportCountry> sportCountries) {
-        this.name = name;
-        this.description = description;
-        this.athletes = athletes;
-        this.sportCountries = sportCountries;
-    }*/
 
     public Long getId() {
         return id;
@@ -101,15 +92,6 @@ public class Sport implements Serializable {
         return this;
     }
 
-    /*public Set<SportCountry> getSportCountries() {
-        return sportCountries;
-    }
-
-    public Sport setSportCountries(Set<SportCountry> sportCountries) {
-        this.sportCountries = sportCountries;
-        return this;
-    }*/
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,5 +105,14 @@ public class Sport implements Serializable {
         return Objects.hash(name);
     }
 
-
+    @Override
+    public String toString() {
+        return "Sport{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", athletes=" + athletes +
+                ", volunteers=" + volunteers +
+                '}';
+    }
 }
