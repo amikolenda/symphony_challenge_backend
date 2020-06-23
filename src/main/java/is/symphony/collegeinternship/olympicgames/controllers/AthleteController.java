@@ -1,8 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.controllers;
 
-import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
-import is.symphony.collegeinternship.olympicgames.exceptions.ResourceNotFoundException;
-import is.symphony.collegeinternship.olympicgames.models.Athlete;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
 import is.symphony.collegeinternship.olympicgames.services.impl.AthleteService;
 import org.slf4j.Logger;
@@ -29,25 +27,24 @@ public class AthleteController {
     private AthleteService athleteService;
 
     @GetMapping
-    public ResponseEntity<List<AthleteDTO>> showAthletes() throws ResourceNotFoundException {
+    public ResponseEntity<List<AthleteDTO>> showAthletes() throws ElementNotFoundException {
         LOGGER.info("Listing athletes...");
         return ResponseEntity.ok().body(athleteService.findAllDTO());
     }
 
     @GetMapping("/{badge_number}")
-    public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("badge_number") String badge_number) throws NoSuchElementException {
+    public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("badge_number") String badge_number) throws ElementNotFoundException {
         LOGGER.info("Listing an athlete...");
         return ResponseEntity.ok().body(athleteService.findDTOByBadgeNumber(badge_number));
     }
     @PutMapping("/{badge_number}")
-    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("badge_number") String badge_number, @RequestBody @Valid Athlete athlete) throws NoSuchElementException {
+    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("badge_number") String badge_number, @RequestBody @Valid AthleteDTO athleteDTO) throws ElementNotFoundException {
         LOGGER.info("Updating an athlete...");
-        athleteService.updateAthlete(athlete);
-        return ResponseEntity.ok().body(athleteService.findDTOByBadgeNumber(badge_number));
+        return ResponseEntity.ok().body(athleteService.updateAthlete(athleteDTO));
     }
 
     @DeleteMapping("/{badge_number}")
-    public ResponseEntity<String> deleteAthlete(@PathVariable("badge_number") String badge_number) throws NoSuchElementException {
+    public ResponseEntity<String> deleteAthlete(@PathVariable("badge_number") String badge_number) throws ElementNotFoundException {
         LOGGER.info("Deleting an athlete...");
         athleteService.delete(badge_number);
         return ResponseEntity.ok().body("Athlete with badge number: " + badge_number + "is deleted");

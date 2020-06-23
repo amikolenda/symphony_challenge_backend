@@ -1,6 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.controllers;
 
-import is.symphony.collegeinternship.olympicgames.models.Volunteer;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
 import is.symphony.collegeinternship.olympicgames.services.impl.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,7 @@ public class SignupController {
     VolunteerService volunteerService;
 
     @PostMapping
-    public ResponseEntity<VolunteerDTO> createVolunteer(@RequestBody @Valid Volunteer volunteer){
-        volunteerService.save(volunteer);
-        return ResponseEntity.ok().body(volunteerService.findDTOById(volunteer.getUserName()));
+    public ResponseEntity<VolunteerDTO> createVolunteer(@RequestBody @Valid VolunteerDTO volunteerDTO) throws ElementExistsException {
+        return ResponseEntity.ok().body(volunteerService.save(volunteerDTO));
     }
 }

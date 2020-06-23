@@ -1,13 +1,12 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class AdminDTO {
     @NotNull
-    @Id
+    @JsonProperty("user_name")
     private String userName;
     private String password;
     private String role = "ADMIN";
@@ -18,7 +17,7 @@ public class AdminDTO {
         this.userName = userName;
         this.password = password;
     }
-
+    @JsonProperty("user_name")
     public String getUserName() {
         return userName;
     }

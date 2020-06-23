@@ -29,35 +29,35 @@ public class DTOConverterService {
     public SportDTO convertSportDTO(Sport sport){
         LOGGER.info("Converting Sport DAO to DTO...");
         SportDTO sportDTO =  modelMapper.map(sport, SportDTO.class);
-        LOGGER.info("Converted Sport DAO to DTO...");
+        LOGGER.info("Converted Sport DAO to DTO.");
         return sportDTO;
     }
 
     public VolunteerDTO convertVolunteerDTO(Volunteer volunteer){
         LOGGER.info("Converting Volunteer DAO to DTO...");
         VolunteerDTO volunteerDTO = modelMapper.map(volunteer, VolunteerDTO.class);
-        LOGGER.info("Converted Volunteer DAO to DTO...");
+        LOGGER.info("Converted Volunteer DAO to DTO.");
         return volunteerDTO;
     }
 
     public Sport convertSportDTOToDAO(SportDTO sportDTO){
         LOGGER.info("Converting Sport DTO to DAO...");
         Sport sport = modelMapper.map(sportDTO, Sport.class);
-        LOGGER.info("Converted Sport DTO to DAO...");
+        LOGGER.info("Converted Sport DTO to DAO.");
         return sport;
     }
 
     public Athlete convertAthleteDTOToDAO(AthleteDTO athleteDTO){
         LOGGER.info("Converting Athlete DTO to DAO...");
         Athlete athlete = modelMapper.map(athleteDTO, Athlete.class);
-        LOGGER.info("Converted Athlete DTO to DAO...");
+        LOGGER.info("Converted Athlete DTO to DAO.");
         return athlete;
     }
 
     public Volunteer convertVolunteerDTOToDAO(VolunteerDTO volunteerDTO){
         LOGGER.info("Converting Volunteer DTO to DAO...");
         Volunteer volunteer = modelMapper.map(volunteerDTO, Volunteer.class);
-        LOGGER.info("Converted Volunteer DTO to DAO...");
+        LOGGER.info("Converted Volunteer DTO to DAO.");
         return volunteer;
     }
 

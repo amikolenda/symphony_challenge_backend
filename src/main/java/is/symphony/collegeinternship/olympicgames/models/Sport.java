@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
-import static javax.persistence.CascadeType.ALL;
-
 @Table(name = "SPORT")
 @Entity
 public class Sport implements Serializable {
@@ -26,8 +24,7 @@ public class Sport implements Serializable {
     @OneToMany
     private Set<Athlete> athletes;
 
-    @OneToMany(cascade = ALL)
-    @JoinColumn(name ="id")
+    @OneToMany
     private Set<Volunteer> volunteers;
 
 
@@ -95,14 +92,14 @@ public class Sport implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Sport)) return false;
         Sport sport = (Sport) o;
-        return name.equals(sport.name);
+        return getName().equals(sport.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(getName());
     }
 
     @Override

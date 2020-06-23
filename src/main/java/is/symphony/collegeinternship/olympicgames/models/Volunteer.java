@@ -1,13 +1,10 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
-import java.util.Set;
 
 @Table(name = "VOLUNTEER")
 @Entity
@@ -15,7 +12,6 @@ public class Volunteer {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    @JsonIgnore
     private Long id;
 
     @Column(name = "user_name")
@@ -44,7 +40,6 @@ public class Volunteer {
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
-
     @Column(name = "photo")
     private String photo;
     @Column(name = "gender")
@@ -52,18 +47,10 @@ public class Volunteer {
     @Column(name = "role")
     private String role = "VOLUNTEER";
 
-    @JsonIgnore
     @ManyToOne
     private Sport sport;
 
     public Volunteer() {
-    }
-    public Volunteer(String firstName, String lastName, String userName, String password, String nationality) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.nationality = nationality;
     }
 
     public String getPassword() {

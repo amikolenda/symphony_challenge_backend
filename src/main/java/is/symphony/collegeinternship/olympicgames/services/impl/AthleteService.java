@@ -1,12 +1,12 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
+
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
-import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import is.symphony.collegeinternship.olympicgames.exceptions.ResourceNotFoundException;
 import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.AthleteRepository;
@@ -28,13 +28,32 @@ public class AthleteService {
     private CountryService countryService;
 
 
-    public void save(Athlete athlete) throws ElementExistsException {
+    public AthleteDTO save(AthleteDTO athleteDTO) throws ElementExistsException {
+        if (athleteRepository.existsByBadgeNumber(athleteDTO.getBadgeNumber())) {
+            LOGGER.error("Athlete already exists!");
+            throw new ElementExistsException();
+        }
+        LOGGER.info("Saving athlete...");
+        Athlete athlete = dtoConverterService.convertAthleteDTOToDAO(athleteDTO);
         athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
         Athlete save = athleteRepository.save(athlete);
         LOGGER.info("Saved {}", save);
+        return dtoConverterService.convertToDTO(save);
     }
 
-    public List<AthleteDTO> findAllDTO() throws ResourceNotFoundException {
+    public Athlete save(Athlete athlete) {
+        if (athleteRepository.existsByBadgeNumber(athlete.getBadgeNumber())) {
+            Athlete existingAthlete = athleteRepository.findByBadgeNumber(athlete.getBadgeNumber());
+            athlete.setId(existingAthlete.getId());
+        }
+        LOGGER.info("Saving/updating athlete...");
+        athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
+        Athlete save = athleteRepository.save(athlete);
+        LOGGER.info("Saved/updated {}", save);
+        return save;
+    }
+
+    public List<AthleteDTO> findAllDTO() throws ElementNotFoundException {
         LOGGER.info("Accessing DB to get all athletes...");
 
         List<Athlete> allAthletes = athleteRepository.findAll();
@@ -42,41 +61,55 @@ public class AthleteService {
         List<AthleteDTO> allAthletesList = allAthletes.stream().map(dtoConverterService::convertToDTO).collect(Collectors.toList());
         if (allAthletes.isEmpty()) {
             LOGGER.error("Could not find any athlete!");
-            throw new ResourceNotFoundException();
+            throw new ElementNotFoundException();
         }
         else return allAthletesList;
     }
 
-    public AthleteDTO findDTOByBadgeNumber(String badge_number) throws NoSuchElementException {
+    public AthleteDTO findDTOByBadgeNumber(String badge_number) throws ElementNotFoundException {
         try{
             LOGGER.info("Accessing DB to get an athlete...");
             Athlete found = athleteRepository.findByBadgeNumber(badge_number);
-            LOGGER.info("Athlete found...");
+            LOGGER.info("Found {}", found);
             return dtoConverterService.convertToDTO(found);
         } catch (Exception e){
-            LOGGER.error("Athlete not found...");
-            throw new NoSuchElementException();
+            LOGGER.error("Athlete not found.");
+            throw new ElementNotFoundException();
         }
     }
 
-    public Athlete findByBadgeNumber(String badge_number){
+    public Athlete findByBadgeNumber(String badge_number) throws ElementNotFoundException{
+        if (!athleteRepository.existsByBadgeNumber(badge_number)) {
+            LOGGER.error("Athlete does not exist!");
+            throw new ElementNotFoundException();
+        }
         LOGGER.info("Accessing DB to get an athlete...");
         Athlete found = athleteRepository.findByBadgeNumber(badge_number);
-        LOGGER.info("Athlete found...");
+        LOGGER.info("Found {}", found);
         return found;
     }
 
 
-    public void updateAthlete(Athlete athlete) {
+    public AthleteDTO updateAthlete(AthleteDTO athleteDTO) throws ElementNotFoundException{
+        if (!athleteRepository.existsByBadgeNumber(athleteDTO.getBadgeNumber())) {
+            LOGGER.error("Athlete does not exist!");
+            throw new ElementNotFoundException();
+        }
         LOGGER.info("Updating an athlete...");
-        athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
-        athleteRepository.save(athlete);
-        LOGGER.info("Athlete updated...");
+        Athlete newAthlete = dtoConverterService.convertAthleteDTOToDAO(athleteDTO);
+        Athlete existingAthlete = athleteRepository.findByBadgeNumber(newAthlete.getBadgeNumber());
+        newAthlete.setId(existingAthlete.getId());
+        newAthlete.setCountry(countryService.findByCountryShortCode(newAthlete.getNationality()));
+        athleteRepository.save(newAthlete);
+        LOGGER.info("Updated {}", newAthlete);
+        return dtoConverterService.convertToDTO(newAthlete);
     }
 
-    public void delete(String badge_number) {
+    public void delete(String badge_number) throws ElementNotFoundException{
+        LOGGER.info("Accessing DB to get an athlete...");
+        Athlete athlete = findByBadgeNumber(badge_number);
         LOGGER.info("Deleting an athlete...");
-        athleteRepository.delete(findByBadgeNumber(badge_number));
-        LOGGER.info("Athlete deleted..");
+        athleteRepository.delete(athlete);
+        LOGGER.info("Athlete deleted.");
     }
 }

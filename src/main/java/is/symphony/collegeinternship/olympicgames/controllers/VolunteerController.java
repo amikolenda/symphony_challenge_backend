@@ -1,8 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.controllers;
 
-import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
-import is.symphony.collegeinternship.olympicgames.exceptions.ResourceNotFoundException;
-import is.symphony.collegeinternship.olympicgames.models.Volunteer;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
 import is.symphony.collegeinternship.olympicgames.services.impl.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +22,20 @@ public class VolunteerController {
     @Autowired
     VolunteerService volunteerService;
     @GetMapping
-    public ResponseEntity<List<VolunteerDTO>> showVolunteers() throws ResourceNotFoundException {
+    public ResponseEntity<List<VolunteerDTO>> showVolunteers() throws ElementNotFoundException {
         return ResponseEntity.ok().body(volunteerService.findAllDTO());
     }
     @GetMapping("/{userName}")
-    public ResponseEntity<VolunteerDTO> showVolunteer(@PathVariable("userName") String userName) throws NoSuchElementException {
-        return ResponseEntity.ok().body(volunteerService.findDTOById(userName));
+    public ResponseEntity<VolunteerDTO> showVolunteer(@PathVariable("userName") String userName) throws ElementNotFoundException {
+        return ResponseEntity.ok().body(volunteerService.findDTOByUserName(userName));
     }
 
     @PutMapping("/{userName}")
-    public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable("userName") String userName, @RequestBody @Valid Volunteer volunteer){
-        volunteerService.updateVolunteer(volunteer);
-        return ResponseEntity.ok().body(volunteerService.findDTOById(userName));
+    public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable("userName") String userName, @RequestBody @Valid VolunteerDTO volunteerDTO) throws ElementNotFoundException{
+        return ResponseEntity.ok().body(volunteerService.updateVolunteer(volunteerDTO,userName));
     }
     @DeleteMapping("/{userName}")
-    public ResponseEntity<String> deleteVolunteer(@PathVariable("userName") String userName) throws NoSuchElementException {
+    public ResponseEntity<String> deleteVolunteer(@PathVariable("userName") String userName) throws ElementNotFoundException {
         volunteerService.delete(userName);
         return ResponseEntity.ok().body("Volunteer with user name: " + userName + "is deleted");
     }

@@ -1,7 +1,7 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
-import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
@@ -38,8 +38,18 @@ public class SportService {
         LOGGER.info("Saved {}", save);
         return dtoConverterService.convertSportDTO(save);
     }
+    public Sport save(Sport sport){
+        if (sportRepository.existsByName(sport.getName())) {
+            Sport existingSport = sportRepository.findSportByName(sport.getName());
+            sport.setId(existingSport.getId());
+        }
+        LOGGER.info("Saving/updating sport...");
+        sportRepository.save(sport);
+        LOGGER.info("Saved/updated {}", sport);
+        return sport;
+    }
 
-    public List<SportDTO> findAllDTO() throws NoSuchElementException {
+    public List<SportDTO> findAllDTO() throws ElementNotFoundException {
         LOGGER.info("Accessing DB to get all sports...");
         List<Sport> allSports = sportRepository.findAll();
         LOGGER.info("Found {} sports!", allSports.size());
@@ -47,11 +57,11 @@ public class SportService {
         List<SportDTO> allSportsList = sportRepository.findAll().stream().map(dtoConverterService::convertSportDTO).collect(Collectors.toList());
         if (allSportsList.isEmpty()){
             LOGGER.error("Could not find any sport!");
-            throw new NoSuchElementException();
+            throw new ElementNotFoundException();
         }
         else return allSportsList;
     }
-    public SportDTO findDTOByName(String name) throws NoSuchElementException {
+    public SportDTO findDTOByName(String name) throws ElementNotFoundException {
         try{
             LOGGER.info("Accessing DB to get a sport...");
             Sport found = sportRepository.findSportByName(name);
@@ -59,10 +69,10 @@ public class SportService {
             return dtoConverterService.convertSportDTO(found);
         } catch (Exception e){
             LOGGER.info("Sport not found.");
-            throw new NoSuchElementException();
+            throw new ElementNotFoundException();
         }
     }
-    public Sport findByName(String name) throws NoSuchElementException {
+    public Sport findByName(String name) throws ElementNotFoundException {
         try{
             LOGGER.info("Accessing DB to get a sport...");
             Sport found = sportRepository.findSportByName(name);
@@ -70,11 +80,11 @@ public class SportService {
             return found;
         } catch (Exception e){
             LOGGER.error("Sport not found.");
-            throw new NoSuchElementException();
+            throw new ElementNotFoundException();
         }
     }
 
-    public void delete(String name) throws NoSuchElementException {
+    public void delete(String name) throws ElementNotFoundException {
         LOGGER.info("Accessing DB to get a sport...");
         Sport sport = findByName(name);
         LOGGER.info("Deleting sport...");
@@ -82,16 +92,17 @@ public class SportService {
         LOGGER.info("Sport deleted.");
     }
 
-    public SportDTO updateSport(SportDTO sportDTO) throws NoSuchElementException {
-        if (!sportRepository.existsByName(sportDTO.getName())) {
+    public SportDTO updateSport(SportDTO sportDTO, String name) throws ElementNotFoundException {
+        if (!sportRepository.existsByName(name)) {
             LOGGER.error("Sport does not exist!");
-            throw new NoSuchElementException();
+            throw new ElementNotFoundException();
         }
         LOGGER.info("Updating sport...");
-        Sport update = sportRepository.save(dtoConverterService.convertSportDTOToDAO(sportDTO));
-        LOGGER.info("Updated {}", update);
-        return dtoConverterService.convertSportDTO(update);
-
+        Sport newSport = dtoConverterService.convertSportDTOToDAO(sportDTO);
+        Sport existingSport = sportRepository.findSportByName(name);
+        newSport.setId(existingSport.getId());
+        sportRepository.save(newSport);
+        LOGGER.info("Updated {}", newSport);
+        return dtoConverterService.convertSportDTO(newSport);
     }
-
 }

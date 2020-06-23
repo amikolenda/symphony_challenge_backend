@@ -1,6 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
 
-import is.symphony.collegeinternship.olympicgames.exceptions.NoSuchElementException;
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 import is.symphony.collegeinternship.olympicgames.repositories.CountryRepository;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class CountryService {
             return found;
         } catch (Exception e){
             LOGGER.error("Country not found...");
-            throw new NoSuchElementException();
+            throw new ElementNotFoundException();
         }
     }
 
@@ -48,7 +48,7 @@ public class CountryService {
             return found;
         } catch (Exception e){
             LOGGER.error("Country not found...");
-            throw new NoSuchElementException();
+            throw new ElementNotFoundException();
         }
     }
 
