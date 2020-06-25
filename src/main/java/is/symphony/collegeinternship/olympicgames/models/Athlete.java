@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "ATHLETE")
 @Entity
@@ -35,7 +36,7 @@ public class Athlete implements Serializable {
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
-    @Column(name = "badge_number")
+    @Column(name = "badge_number",unique = true)
     @NotNull
     private String badgeNumber;
     @Column(name = "photo")
@@ -45,8 +46,8 @@ public class Athlete implements Serializable {
     @Column(name = "role")
     private String role = "ATHLETE";
 
-    @ManyToOne
-    private Sport sport;
+    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private Set<Sport> sports;
 
     public Athlete() {
     }
@@ -102,12 +103,12 @@ public class Athlete implements Serializable {
         return this;
     }
 
-    public Sport getSport() {
-        return sport;
+    public Set<Sport> getSports() {
+        return sports;
     }
 
-    public Athlete setSport(Sport sport) {
-        this.sport = sport;
+    public Athlete setSports(Set<Sport> sport) {
+        this.sports = sport;
         return this;
     }
 
@@ -182,7 +183,7 @@ public class Athlete implements Serializable {
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
-                ", sport=" + sport +
+                ", sports=" + sports +
                 '}';
     }
 }

@@ -34,7 +34,7 @@ public class SportController {
     }
 
     @PostMapping
-    public ResponseEntity<SportDTO> createSport(@RequestBody @Valid SportDTO sportDTO) throws ElementExistsException {
+    public ResponseEntity<SportDTO> createSport(@RequestBody @Valid SportDTO sportDTO) throws ElementExistsException, ElementNotFoundException {
         return ResponseEntity.ok().body(sportService.save(sportDTO));
     }
 

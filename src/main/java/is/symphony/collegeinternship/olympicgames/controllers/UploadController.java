@@ -1,5 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.controllers;
 
+import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class UploadController {
     private FileUploadServiceImpl fileUploadService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws NoFileException, BadExtensionException, InvalidFieldNameException {
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws NoFileException, BadExtensionException, InvalidFieldNameException, ElementNotFoundException {
         return fileUploadService.uploadFile(file);
     }
 

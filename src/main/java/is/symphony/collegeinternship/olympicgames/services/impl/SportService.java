@@ -2,6 +2,7 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
+import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
@@ -9,8 +10,8 @@ import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.SportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +27,22 @@ public class SportService {
     @Autowired
     CountryService countryService;
 
+    @Autowired
+    AthleteService athleteService;
 
-    public SportDTO save(SportDTO sportDTO) throws ElementExistsException {
+
+    public SportDTO save(SportDTO sportDTO) throws ElementExistsException, ElementNotFoundException {
         if (sportRepository.existsByName(sportDTO.getName())) {
             LOGGER.error("Sport already exists!");
             throw new ElementExistsException();
         }
         LOGGER.info("Saving sport...");
         Sport sport = dtoConverterService.convertSportDTOToDAO(sportDTO);
+
+        Set<Athlete> athletesSet = sport.getAthletes();
+        if (athletesSet != null) sport.setAthletes(athleteService.setAthletes(athletesSet));
+
+        LOGGER.info("Saving sport...");
         Sport save = sportRepository.save(sport);
         LOGGER.info("Saved {}", save);
         return dtoConverterService.convertSportDTO(save);
@@ -101,8 +110,12 @@ public class SportService {
         Sport newSport = dtoConverterService.convertSportDTOToDAO(sportDTO);
         Sport existingSport = sportRepository.findSportByName(name);
         newSport.setId(existingSport.getId());
+        Set<Athlete> athletesSet = newSport.getAthletes();
+        if (athletesSet != null) newSport.setAthletes(athleteService.setAthletes(athletesSet));
+
         sportRepository.save(newSport);
         LOGGER.info("Updated {}", newSport);
         return dtoConverterService.convertSportDTO(newSport);
     }
+
 }

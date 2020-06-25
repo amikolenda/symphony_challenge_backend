@@ -1,12 +1,13 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 public class AthleteDTO {
 
@@ -44,8 +45,8 @@ public class AthleteDTO {
     @JsonProperty("role")
     private String role = "ATHLETE";
 
-    @JsonProperty("sport")
-    private Sport sport;;
+    private Set<SportDTO> sports;
+
 
 
     public AthleteDTO() {
@@ -134,6 +135,15 @@ public class AthleteDTO {
         return this;
     }
 
+    public Set<SportDTO> getSports() {
+        return sports;
+    }
+
+    public AthleteDTO setSports(Set<SportDTO> sports) {
+        this.sports = sports;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,7 +169,6 @@ public class AthleteDTO {
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
-                ", sport=" + sport +
                 '}';
     }
 }

@@ -1,7 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
 
-import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import java.util.Objects;
 import java.util.Set;
@@ -11,7 +10,7 @@ public class SportDTO {
     private String name;
     private String description;
 
-    private Set<Athlete> athletes;
+    private Set<AthleteDTO> athletes;
 
     private Set<Volunteer> volunteers;
 
@@ -23,11 +22,11 @@ public class SportDTO {
         this.description = description;
     }
 
-    public Set<Athlete> getAthletes() {
+    public Set<AthleteDTO> getAthletes() {
         return athletes;
     }
 
-    public SportDTO setAthletes(Set<Athlete> athletes) {
+    public SportDTO setAthletes(Set<AthleteDTO> athletes) {
         this.athletes = athletes;
         return this;
     }

@@ -2,6 +2,8 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
+import is.symphony.collegeinternship.olympicgames.models.Sport;
+import is.symphony.collegeinternship.olympicgames.repositories.SportRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.AthleteRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,8 @@ public class AthleteService {
     private DTOConverterService dtoConverterService;
     @Autowired
     private CountryService countryService;
+    @Autowired
+    private SportRepository sportRepository;
 
 
     public AthleteDTO save(AthleteDTO athleteDTO) throws ElementExistsException {
@@ -41,13 +46,15 @@ public class AthleteService {
         return dtoConverterService.convertToDTO(save);
     }
 
-    public Athlete save(Athlete athlete) {
+    public Athlete save(Athlete athlete) throws ElementNotFoundException{
         if (athleteRepository.existsByBadgeNumber(athlete.getBadgeNumber())) {
             Athlete existingAthlete = athleteRepository.findByBadgeNumber(athlete.getBadgeNumber());
             athlete.setId(existingAthlete.getId());
         }
         LOGGER.info("Saving/updating athlete...");
         athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
+        Set<Sport> sportsSet = athlete.getSports();
+        if (sportsSet != null) athlete.setSports(setSports(sportsSet));
         Athlete save = athleteRepository.save(athlete);
         LOGGER.info("Saved/updated {}", save);
         return save;
@@ -111,5 +118,36 @@ public class AthleteService {
         LOGGER.info("Deleting an athlete...");
         athleteRepository.delete(athlete);
         LOGGER.info("Athlete deleted.");
+    }
+
+    public Set<Athlete> setAthletes(Set<Athlete> athletesSet) throws ElementNotFoundException{
+        LOGGER.info("Setting athletes to sport...");
+        for (Athlete athlete : athletesSet) {
+            String badgeNumber = athlete.getBadgeNumber();
+            if (athleteRepository.existsByBadgeNumber(badgeNumber)) {
+                athlete.setId(findByBadgeNumber(badgeNumber).getId());
+                athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
+            } else {
+                LOGGER.error("Athlete does not exist!");
+                throw new ElementNotFoundException();
+            }
+        }
+        LOGGER.info("Athletes set.");
+        return athletesSet;
+    }
+
+    private Set<Sport> setSports(Set<Sport> sportsSet)throws ElementNotFoundException{
+        LOGGER.info("Setting sports to athlete...");
+        for (Sport sport : sportsSet) {
+            String name = sport.getName();
+            if (sportRepository.existsByName(name)) {
+                sport.setId(sportRepository.findSportByName(name).getId());
+            } else {
+                LOGGER.error("Sport does not exist!");
+                throw new ElementNotFoundException();
+            }
+        }
+        LOGGER.info("Sports set.");
+        return sportsSet;
     }
 }
