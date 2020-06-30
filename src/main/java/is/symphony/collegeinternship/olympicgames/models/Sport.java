@@ -30,7 +30,13 @@ public class Sport implements Serializable {
                     nullable = false, updatable = false))
     private Set<Athlete> athletes;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "sport_volunteer",
+            joinColumns = @JoinColumn(name = "sport_id",referencedColumnName = "id",
+                    nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "volunteer_id",referencedColumnName = "id",
+                    nullable = false, updatable = false))
     private Set<Volunteer> volunteers;
 
 
@@ -114,8 +120,6 @@ public class Sport implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", athletes=" + athletes +
-                ", volunteers=" + volunteers +
                 '}';
     }
 }

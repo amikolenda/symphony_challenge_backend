@@ -27,7 +27,7 @@ public class AthleteController {
     private AthleteService athleteService;
 
     @GetMapping
-    public ResponseEntity<List<AthleteDTO>> showAthletes() throws ElementNotFoundException {
+    public ResponseEntity<List<AthleteDTO>> showAthletes() {
         LOGGER.info("Listing athletes...");
         return ResponseEntity.ok().body(athleteService.findAllDTO());
     }

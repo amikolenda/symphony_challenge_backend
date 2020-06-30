@@ -1,18 +1,12 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
 
-import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import java.util.Objects;
-import java.util.Set;
 
 public class SportDTO {
-
+    private Long id;
     private String name;
     private String description;
-
-    private Set<AthleteDTO> athletes;
-
-    private Set<Volunteer> volunteers;
 
     public SportDTO() {
     }
@@ -20,24 +14,6 @@ public class SportDTO {
     public SportDTO(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public Set<AthleteDTO> getAthletes() {
-        return athletes;
-    }
-
-    public SportDTO setAthletes(Set<AthleteDTO> athletes) {
-        this.athletes = athletes;
-        return this;
-    }
-
-    public Set<Volunteer> getVolunteers() {
-        return volunteers;
-    }
-
-    public SportDTO setVolunteers(Set<Volunteer> volunteers) {
-        this.volunteers = volunteers;
-        return this;
     }
 
     public String getName() {
@@ -58,6 +34,15 @@ public class SportDTO {
         return this;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public SportDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,10 +59,9 @@ public class SportDTO {
     @Override
     public String toString() {
         return "SportDTO{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", athletes=" + athletes +
-                ", volunteers=" + volunteers +
                 '}';
     }
 }

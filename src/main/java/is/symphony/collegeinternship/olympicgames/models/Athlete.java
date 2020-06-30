@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -155,6 +156,16 @@ public class Athlete implements Serializable {
     public Athlete setRole(String role) {
         this.role = role;
         return this;
+    }
+
+    public void addSport(Sport sport){
+        this.sports.add(sport);
+        if (sport.getAthletes() != null) sport.getAthletes().add(this);
+        else{
+            Set<Athlete> set = new HashSet<>();
+            set.add(this);
+            sport.setAthletes(set);
+        }
     }
 
     @Override

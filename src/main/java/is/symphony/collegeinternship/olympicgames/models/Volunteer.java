@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "VOLUNTEER")
 @Entity
@@ -47,8 +49,8 @@ public class Volunteer {
     @Column(name = "role")
     private String role = "VOLUNTEER";
 
-    @ManyToOne
-    private Sport sport;
+    @ManyToMany(mappedBy = "volunteers",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private Set<Sport> sports;
 
     public Volunteer() {
     }
@@ -71,12 +73,12 @@ public class Volunteer {
         return this;
     }
 
-    public Sport getSport() {
-        return sport;
+    public Set<Sport> getSports() {
+        return sports;
     }
 
-    public Volunteer setSport(Sport sport) {
-        this.sport = sport;
+    public Volunteer setSports(Set<Sport> sports) {
+        this.sports = sports;
         return this;
     }
 
@@ -162,6 +164,16 @@ public class Volunteer {
         return this;
     }
 
+    public void addSport(Sport sport){
+        this.sports.add(sport);
+        if (sport.getVolunteers() != null) sport.getVolunteers().add(this);
+        else{
+            Set<Volunteer> set = new HashSet<>();
+            set.add(this);
+            sport.setVolunteers(set);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -189,7 +201,7 @@ public class Volunteer {
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
-                ", sport=" + sport +
+                ", sports=" + sports +
                 '}';
     }
 }

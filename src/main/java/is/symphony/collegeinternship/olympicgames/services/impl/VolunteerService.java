@@ -2,8 +2,10 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementExistsException;
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
+import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
+import is.symphony.collegeinternship.olympicgames.repositories.SportRepository;
 import is.symphony.collegeinternship.olympicgames.repositories.VolunteerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +30,8 @@ public class VolunteerService {
     private CountryService countryService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private SportRepository sportRepository;
 
 
     public VolunteerDTO save(VolunteerDTO volunteerDTO) throws ElementExistsException {
@@ -38,6 +44,11 @@ public class VolunteerService {
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
         String password = passwordEncoder.encode(volunteer.getPassword());
         volunteer.setPassword(password);
+        volunteerRepository.save(volunteer);
+
+        Set<Sport> sportsSet = volunteer.getSports();
+        if (sportsSet != null) setSports(volunteer, sportsSet);
+
         volunteerRepository.save(volunteer);
         LOGGER.info("Saved {}", volunteer);
         return dtoConverterService.convertVolunteerDTO(volunteer);
@@ -52,6 +63,11 @@ public class VolunteerService {
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
         String password = passwordEncoder.encode(volunteer.getPassword());
         volunteer.setPassword(password);
+        volunteerRepository.save(volunteer);
+
+        Set<Sport> sportsSet = volunteer.getSports();
+        if (sportsSet != null) setSports(volunteer, sportsSet);
+
         volunteerRepository.save(volunteer);
         LOGGER.info("Saved/updated {}", volunteer);
         return volunteer;
@@ -104,6 +120,10 @@ public class VolunteerService {
         String password = passwordEncoder.encode(volunteer.getPassword());
         volunteer.setPassword(password);
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
+
+        Set<Sport> sportsSet = volunteer.getSports();
+        if (sportsSet != null) setSports(volunteer, sportsSet);
+
         volunteerRepository.save(volunteer);
         LOGGER.info("Updated {}", volunteer);
         return dtoConverterService.convertVolunteerDTO(volunteer);
@@ -115,5 +135,38 @@ public class VolunteerService {
         LOGGER.info("Deleting volunteer...");
         volunteerRepository.delete(findByUserName(userName));
         LOGGER.info("Volunteer deleted!");
+    }
+
+    public Set<Volunteer> setVolunteers(Set<Volunteer> volunteersSet) {
+        LOGGER.info("Setting volunteers to sport...");
+        Set<Volunteer> temp = new HashSet<>();
+        for (Volunteer volunteer : volunteersSet) {
+            String name = volunteer.getUserName();
+            if (volunteerRepository.existsByUserName(name)) {
+                volunteer.setId(findByUserName(name).getId());
+                volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
+                temp.add(volunteer);
+            } else {
+                LOGGER.info("Volunteer does not exist!");
+            }
+        }
+        LOGGER.info("Volunteer set.");
+        return temp;
+    }
+    public Set<Sport> setSports(Volunteer volunteer, Set<Sport> sportsSet){
+        LOGGER.info("Setting sports to volunteer...");
+        Set<Sport> temp = new HashSet<>();
+        for (Sport sport : sportsSet) {
+            String name = sport.getName();
+            if (sportRepository.existsByName(name)) {
+                sport.setId(sportRepository.findSportByName(name).getId());
+                volunteer.addSport(sport);
+                temp.add(sport);
+            } else {
+                LOGGER.info("Sport does not exist!");
+            }
+        }
+        LOGGER.info("Sports set.");
+        return temp;
     }
 }

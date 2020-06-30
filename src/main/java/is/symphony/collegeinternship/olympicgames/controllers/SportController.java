@@ -25,12 +25,12 @@ public class SportController {
     SportService sportService;
 
     @GetMapping
-    public ResponseEntity<List<SportDTO>> showSports() throws ElementNotFoundException {
+    public ResponseEntity<List<SportDTO>> showSports() {
         return ResponseEntity.ok().body(sportService.findAllDTO());
     }
-    @GetMapping("/{name}")
-    public ResponseEntity<SportDTO> showSport(@PathVariable("name") String name) throws ElementNotFoundException {
-        return ResponseEntity.ok().body(sportService.findDTOByName(name));
+    @GetMapping("/{id}")
+    public ResponseEntity<SportDTO> showSport(@PathVariable("id") Long id) throws ElementNotFoundException {
+        return ResponseEntity.ok().body(sportService.findDTOById(id));
     }
 
     @PostMapping
@@ -39,15 +39,15 @@ public class SportController {
     }
 
 
-    @PutMapping("/{name}")
-    public ResponseEntity<SportDTO> updateSport(@PathVariable("name") String name, @RequestBody @Valid SportDTO sportDTO) throws ElementNotFoundException {
-        return ResponseEntity.ok().body(sportService.updateSport(sportDTO, name));
+    @PutMapping("/{id}")
+    public ResponseEntity<SportDTO> updateSport(@PathVariable("id") Long id, @RequestBody @Valid SportDTO sportDTO) throws ElementNotFoundException {
+        return ResponseEntity.ok().body(sportService.updateSport(sportDTO));
     }
 
-    @DeleteMapping("/{name}")
-    public ResponseEntity<String> deleteSport(@PathVariable("name") String name) throws ElementNotFoundException {
-        sportService.delete(name);
-        return ResponseEntity.ok().body("Sport " + name + "is deleted!");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteSport(@PathVariable("id") Long id) throws ElementNotFoundException {
+        sportService.delete(id);
+        return ResponseEntity.ok().body("Sport " + id + "is deleted!");
     }
 
 

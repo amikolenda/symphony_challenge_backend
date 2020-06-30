@@ -1,6 +1,5 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 import javax.persistence.Id;
@@ -169,6 +168,7 @@ public class AthleteDTO {
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
+                ", sports=" + sports +
                 '}';
     }
 }

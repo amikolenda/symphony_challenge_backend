@@ -22,7 +22,7 @@ public class VolunteerController {
     @Autowired
     VolunteerService volunteerService;
     @GetMapping
-    public ResponseEntity<List<VolunteerDTO>> showVolunteers() throws ElementNotFoundException {
+    public ResponseEntity<List<VolunteerDTO>> showVolunteers() {
         return ResponseEntity.ok().body(volunteerService.findAllDTO());
     }
     @GetMapping("/{userName}")

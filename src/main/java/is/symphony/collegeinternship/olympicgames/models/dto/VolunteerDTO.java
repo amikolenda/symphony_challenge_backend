@@ -2,10 +2,10 @@ package is.symphony.collegeinternship.olympicgames.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 public class VolunteerDTO {
     @JsonProperty("first_name")
@@ -36,8 +36,8 @@ public class VolunteerDTO {
     private String role = "VOLUNTEER";
     @JsonProperty("password")
     private String password;
-    @JsonProperty("sport")
-    private Sport sport;
+    @JsonProperty("sports")
+    private Set<SportDTO> sports;
 
     public VolunteerDTO() {
     }
@@ -132,12 +132,12 @@ public class VolunteerDTO {
         return this;
     }
 
-    public Sport getSport() {
-        return sport;
+    public Set<SportDTO> getSports() {
+        return sports;
     }
 
-    public VolunteerDTO setSport(Sport sport) {
-        this.sport = sport;
+    public VolunteerDTO setSports(Set<SportDTO> sports) {
+        this.sports = sports;
         return this;
     }
 
@@ -167,7 +167,7 @@ public class VolunteerDTO {
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
                 ", password='" + password + '\'' +
-                ", sport=" + sport +
+                ", sports=" + sports +
                 '}';
     }
 }
