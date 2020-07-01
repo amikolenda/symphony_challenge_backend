@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "COUNTRY")
@@ -16,7 +15,6 @@ public class Country implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    @JsonIgnore
     private Long id;
 
     @Column(name = "countryName")

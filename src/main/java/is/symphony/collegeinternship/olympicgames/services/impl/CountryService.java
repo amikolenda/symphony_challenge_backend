@@ -2,6 +2,7 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.models.dto.CountryDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.CountryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryService {
@@ -18,10 +20,22 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    DTOConverterService dtoConverterService;
+
     public void save(Country country) {
 
         Country save = countryRepository.save(country);
         LOGGER.info("Saved {}", save);
+    }
+
+    public List<CountryDTO> findAllDTO(){
+        LOGGER.info("Accessing DB to get all countries...");
+
+        List<Country> allCountries = countryRepository.findAll();
+        LOGGER.info("Found {} countries!", allCountries.size());
+        List<CountryDTO> allCountriesList = allCountries.stream().map(dtoConverterService::convertCountryToDTO).collect(Collectors.toList());
+        return allCountriesList;
     }
 
     public void saveAll(List<Country> countries) {

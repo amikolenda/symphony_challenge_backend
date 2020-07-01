@@ -2,7 +2,9 @@ package is.symphony.collegeinternship.olympicgames.controllers;
 
 import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundException;
 import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
+import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.services.impl.AthleteService;
+import is.symphony.collegeinternship.olympicgames.services.impl.SportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,18 @@ public class AthleteController {
 
     @Autowired
     private AthleteService athleteService;
+    @Autowired
+    SportService sportService;
 
     @GetMapping
     public ResponseEntity<List<AthleteDTO>> showAthletes() {
         LOGGER.info("Listing athletes...");
         return ResponseEntity.ok().body(athleteService.findAllDTO());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SportDTO>> showSports() {
+        return ResponseEntity.ok().body(sportService.findAllDTO());
     }
 
     @GetMapping("/{badge_number}")
