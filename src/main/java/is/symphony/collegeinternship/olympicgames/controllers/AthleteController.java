@@ -36,7 +36,7 @@ public class AthleteController {
         return ResponseEntity.ok().body(athleteService.findAllDTO());
     }
 
-    @GetMapping
+    @GetMapping("/sports")
     public ResponseEntity<List<SportDTO>> showSports() {
         return ResponseEntity.ok().body(sportService.findAllDTO());
     }

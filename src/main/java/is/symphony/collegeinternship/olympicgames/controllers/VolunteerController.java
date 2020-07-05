@@ -38,12 +38,12 @@ public class VolunteerController {
     public ResponseEntity<VolunteerDTO> showVolunteer(@PathVariable("userName") String userName) throws ElementNotFoundException {
         return ResponseEntity.ok().body(volunteerService.findDTOByUserName(userName));
     }
-    @GetMapping
+    @GetMapping("/countries")
     public ResponseEntity<List<CountryDTO>> showCountries() {
         return ResponseEntity.ok().body(countryService.findAllDTO());
     }
 
-    @GetMapping
+    @GetMapping("/sports")
     public ResponseEntity<List<SportDTO>> showSports() {
         return ResponseEntity.ok().body(sportService.findAllDTO());
     }
