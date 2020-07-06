@@ -2,20 +2,23 @@ package is.symphony.collegeinternship.olympicgames.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "ATHLETE")
 @Entity
-public class Athlete {
+public class Athlete implements Serializable {
+    private static final long serialVersionUID = -6794424089409161547L;
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    private Long id;
+
     @Column(name = "first_name")
     @NotNull
     @Size(min = 2)
@@ -30,13 +33,12 @@ public class Athlete {
     @Column(name = "nationality")
     private String nationality;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
-    @Column(name = "badge_number")
+    @Column(name = "badge_number",unique = true)
     @NotNull
-    @Id
     private String badgeNumber;
     @Column(name = "photo")
     private String photo;
@@ -45,15 +47,12 @@ public class Athlete {
     @Column(name = "role")
     private String role = "ATHLETE";
 
+    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private Set<Sport> sports;
+
     public Athlete() {
     }
-    public Athlete(String firstName, String lastName, String badgeNumber, String dateOfBirth, String nationality) {
-        this.badgeNumber = badgeNumber;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.dateOfBirth = dateOfBirth;
-        this.nationality = nationality;
-    }
+
     @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
@@ -94,6 +93,24 @@ public class Athlete {
 
     public String getRole() {
         return role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Athlete setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
+    }
+
+    public Athlete setSports(Set<Sport> sport) {
+        this.sports = sport;
+        return this;
     }
 
     public Athlete setFirstName(String firstName) {
@@ -141,6 +158,16 @@ public class Athlete {
         return this;
     }
 
+    public void addSport(Sport sport){
+        this.sports.add(sport);
+        if (sport.getAthletes() != null) sport.getAthletes().add(this);
+        else{
+            Set<Athlete> set = new HashSet<>();
+            set.add(this);
+            sport.setAthletes(set);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,15 +184,17 @@ public class Athlete {
     @Override
     public String toString() {
         return "Athlete{" +
-                "first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", date_of_birth='" + dateOfBirth + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
-                ", countryId=" + country +
-                ", badge_number='" + badgeNumber + '\'' +
+                ", country=" + country +
+                ", badgeNumber='" + badgeNumber + '\'' +
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
+                ", sports=" + sports +
                 '}';
     }
 }

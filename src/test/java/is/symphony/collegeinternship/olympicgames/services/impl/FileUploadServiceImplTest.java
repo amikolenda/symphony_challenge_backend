@@ -27,7 +27,7 @@ class FileUploadServiceImplTest {
         FileInputStream fis = new FileInputStream("src/test/resources/athletes.txt");
         MockMultipartFile multipartFile = new MockMultipartFile("file","athletes.txt", "application/json", fis);
         fileUploadService.uploadFile(multipartFile);
-        Athlete athlete = athleteService.findById("11111-A");
+        Athlete athlete = athleteService.findByBadgeNumber("11111-A");
         assertThat(multipartFile)
                 .hasNoNullFieldsOrProperties();
         assertThat(athlete.getBadgeNumber())

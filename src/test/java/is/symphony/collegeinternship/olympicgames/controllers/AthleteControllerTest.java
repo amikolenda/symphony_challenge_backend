@@ -26,11 +26,15 @@ class AthleteControllerTest {
 
     @Test
     void showAthletes() {
-        Athlete athlete = new Athlete("Ian","Miller", "1111", "04-10-1877","CA");
+        Athlete athlete = new Athlete().setFirstName("Ian")
+                .setLastName("Miller").setBadgeNumber("1111")
+                .setDateOfBirth("04-10-1877");
         athleteService.save(athlete);
-        Athlete athlete1 = new Athlete("Mary","Miller", "2222", "02-11-1887","CA");
+        Athlete athlete1 = new Athlete().setFirstName("Mary")
+                .setLastName("Miller").setBadgeNumber("2222")
+                .setDateOfBirth("02-11-1887");
         athleteService.save(athlete1);
-        when(athleteService.findById(athlete.getBadgeNumber())).thenReturn(athlete);
+        when(athleteService.findByBadgeNumber(athlete.getBadgeNumber())).thenReturn(athlete);
 
         webTestClient.get()
                 .uri("/athletes")
@@ -41,7 +45,9 @@ class AthleteControllerTest {
 
     @Test
     void showAthlete() {
-        Athlete athlete = new Athlete("Ian","Miller", "1111", "04-10-1877","CA");
+        Athlete athlete = new Athlete().setFirstName("Ian")
+                .setLastName("Miller").setBadgeNumber("1111")
+                .setDateOfBirth("04-10-1877");
         athleteService.save(athlete);
         webTestClient.get()
                 .uri("/athletes/1111")

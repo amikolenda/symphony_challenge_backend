@@ -1,9 +1,9 @@
 package is.symphony.collegeinternship.olympicgames.exceptions;
 
 
-public class NoSuchElementException extends RuntimeException{
+public class ElementNotFoundException extends RuntimeException{
 
-    public NoSuchElementException(){
+    public ElementNotFoundException(){
        super("Element not found");
     }
 }

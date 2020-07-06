@@ -1,58 +1,47 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 public class VolunteerDTO {
-    @Column(name = "first_name")
+    @JsonProperty("first_name")
     @NotNull
     @Size(min = 2)
     private String firstName;
-    @Column(name = "last_name")
+    @JsonProperty("last_name")
     @NotNull
     @Size(min = 2)
     private String lastName;
-    @Column(name = "date_of_birth")
+    @JsonProperty("date_of_birth")
     @NotNull
     private String dateOfBirth;
-    @Column(name = "nationality")
+    @JsonProperty("nationality")
     private String nationality;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "countryName", referencedColumnName = "countryName")
+    @JsonProperty("country")
     private Country country;
 
-    @Column(name = "user_name")
+    @JsonProperty("user_name")
     @NotNull
-    @Id
     private String userName;
-    @Column(name = "photo")
+    @JsonProperty("photo")
     private String photo;
-    @Column(name = "gender")
+    @JsonProperty("gender")
     private String gender;
-    @Column(name = "role")
+    @JsonProperty("role")
     private String role = "VOLUNTEER";
-    @Column(name = "password")
+    @JsonProperty("password")
     private String password;
+    @JsonProperty("sports")
+    private Set<SportDTO> sports;
 
     public VolunteerDTO() {
     }
-    public VolunteerDTO(String firstName, String lastName, String userName, String password, String nationality) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.nationality = nationality;
-    }
-
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -61,7 +50,7 @@ public class VolunteerDTO {
         this.firstName = firstName;
         return this;
     }
-
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
@@ -70,7 +59,7 @@ public class VolunteerDTO {
         this.lastName = lastName;
         return this;
     }
-
+    @JsonProperty("date_of_birth")
     public String getDateOfBirth() {
         return dateOfBirth;
     }
@@ -97,7 +86,7 @@ public class VolunteerDTO {
         this.country = country;
         return this;
     }
-
+    @JsonProperty("user_name")
     public String getUserName() {
         return userName;
     }
@@ -143,6 +132,15 @@ public class VolunteerDTO {
         return this;
     }
 
+    public Set<SportDTO> getSports() {
+        return sports;
+    }
+
+    public VolunteerDTO setSports(Set<SportDTO> sports) {
+        this.sports = sports;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -168,6 +166,8 @@ public class VolunteerDTO {
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
+                ", password='" + password + '\'' +
+                ", sports=" + sports +
                 '}';
     }
 }

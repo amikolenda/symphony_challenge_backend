@@ -2,14 +2,11 @@ package is.symphony.collegeinternship.olympicgames.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
+import java.util.Set;
 
 public class AthleteDTO {
 
@@ -31,8 +28,6 @@ public class AthleteDTO {
     private String nationality;
 
     @JsonProperty("country")
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "countryName", referencedColumnName = "countryName")
     private Country country;
 
     @NotNull
@@ -49,33 +44,26 @@ public class AthleteDTO {
     @JsonProperty("role")
     private String role = "ATHLETE";
 
+    private Set<SportDTO> sports;
+
+
+
     public AthleteDTO() {
     }
 
-    public AthleteDTO(@NotNull @Size(min = 2) String firstName, @NotNull @Size(min = 2) String lastName, @NotNull String dateOfBirth, String nationality, Country country, @NotNull String badgeNumber, String photo, String gender, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.nationality = nationality;
-        this.country = country;
-        this.badgeNumber = badgeNumber;
-        this.photo = photo;
-        this.gender = gender;
-        this.role = role;
-    }
 
     public String getRole() {
         return role;
     }
-
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
-
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
-
+    @JsonProperty("date_of_birth")
     public String getDateOfBirth() {
         return dateOfBirth;
     }
@@ -83,7 +71,7 @@ public class AthleteDTO {
     public String getNationality() {
         return nationality;
     }
-
+    @JsonProperty("badge_number")
     public String getBadgeNumber() {
         return badgeNumber;
     }
@@ -99,6 +87,7 @@ public class AthleteDTO {
     public Country getCountry() {
         return country;
     }
+
 
     public AthleteDTO setFirstName(String firstName) {
         this.firstName = firstName;
@@ -145,6 +134,15 @@ public class AthleteDTO {
         return this;
     }
 
+    public Set<SportDTO> getSports() {
+        return sports;
+    }
+
+    public AthleteDTO setSports(Set<SportDTO> sports) {
+        this.sports = sports;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -161,15 +159,16 @@ public class AthleteDTO {
     @Override
     public String toString() {
         return "AthleteDTO{" +
-                "first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", date_of_birth='" + dateOfBirth + '\'' +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
                 ", country=" + country +
-                ", badge_number='" + badgeNumber + '\'' +
+                ", badgeNumber='" + badgeNumber + '\'' +
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
+                ", sports=" + sports +
                 '}';
     }
 }

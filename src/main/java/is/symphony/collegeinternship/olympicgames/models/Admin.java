@@ -2,17 +2,25 @@ package is.symphony.collegeinternship.olympicgames.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Table(name = "ADMIN")
 @Entity
-public class Admin {
+public class Admin implements Serializable {
+    private static final long serialVersionUID = 6782128990089131842L;
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    private Long id;
+
     @Column(name = "user_name")
     @NotNull
-    @Id
     private String userName;
     @Column(name = "password")
     private String password;
@@ -21,7 +29,7 @@ public class Admin {
 
     public Admin() {
     }
-    public Admin(String userName, String password) {
+    public Admin(@NotNull String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
@@ -50,6 +58,15 @@ public class Admin {
 
     public Admin setRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Admin setId(Long id) {
+        this.id = id;
         return this;
     }
 

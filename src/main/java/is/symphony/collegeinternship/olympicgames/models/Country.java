@@ -1,10 +1,9 @@
 package is.symphony.collegeinternship.olympicgames.models;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,12 +11,17 @@ import java.util.Objects;
 @Table(name = "COUNTRY")
 public class Country implements Serializable {
 
+    private static final long serialVersionUID = 1121259828541782353L;
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    private Long id;
+
     @Column(name = "countryName")
     String countryName;
 
-    @Id
     @Column(name = "countryShortCode")
-    String countryShortCode;
+    private String countryShortCode;
 
     public Country() {
     }
@@ -40,6 +44,15 @@ public class Country implements Serializable {
         return this;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Country setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,7 +70,8 @@ public class Country implements Serializable {
     @Override
     public String toString() {
         return "Country{" +
-                "countryName='" + countryName + '\'' +
+                "id=" + id +
+                ", countryName='" + countryName + '\'' +
                 ", countryShortCode='" + countryShortCode + '\'' +
                 '}';
     }

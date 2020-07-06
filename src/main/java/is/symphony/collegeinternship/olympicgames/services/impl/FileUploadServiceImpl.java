@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import is.symphony.collegeinternship.olympicgames.exceptions.InvalidFieldNameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +27,20 @@ import static is.symphony.collegeinternship.olympicgames.utils.FileUtility.valid
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
+    private static Logger LOGGER = LoggerFactory.getLogger(FileUploadServiceImpl.class);
+
     @Autowired
     private AthleteUploadServiceImpl athleteUploadServiceImpl;
 
     @Override
     public ResponseEntity<String> uploadFile(MultipartFile multipartFile) throws InvalidFieldNameException, NoFileException, BadExtensionException {
+        LOGGER.info("Uploading file...");
         validateFileIsEmpty(multipartFile);
         validateFileExtension(multipartFile);
-        if (multipartFile.isEmpty())throw new NoFileException();
+        if (multipartFile.isEmpty()) {
+            LOGGER.error("Something went wrong!");
+            throw new NoFileException();
+        }
 
         try (Reader inputStreamReader = new InputStreamReader(multipartFile.getInputStream())) {
             return readFile(inputStreamReader);
@@ -46,9 +54,11 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
     @Override
     public ResponseEntity<String> readFile(Reader inputStreamReader) throws IOException {
+        LOGGER.info("Mapping athlete");
         ObjectMapper mapper = new ObjectMapper();
         List<Athlete> athletes = mapper.readValue(inputStreamReader, new TypeReference<List<Athlete>>() {
         });
+        LOGGER.info("Read {} athletes from file!", athletes.size());
         return athleteUploadServiceImpl.athleteValidationAdd(athletes);
     }
 

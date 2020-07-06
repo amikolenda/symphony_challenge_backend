@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({BadExtensionException.class, InvalidFieldNameException.class, InvalidInputParametersException.class, NoFileException.class,NoSuchElementException.class, ResourceNotFoundException.class})
+    @ExceptionHandler({BadExtensionException.class, InvalidFieldNameException.class, InvalidInputParametersException.class, NoFileException.class, ElementNotFoundException.class, ResourceNotFoundException.class, ElementExistsException.class})
     public final ResponseEntity<String> appExtensionException(Exception e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
