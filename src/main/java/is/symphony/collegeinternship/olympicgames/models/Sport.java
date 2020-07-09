@@ -26,7 +26,7 @@ public class Sport implements Serializable {
             name = "sport_athlete",
             joinColumns = @JoinColumn(name = "sport_id",referencedColumnName = "id",
                     nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "student_id",referencedColumnName = "id",
+            inverseJoinColumns = @JoinColumn(name = "athlete_id",referencedColumnName = "id",
                     nullable = false, updatable = false))
     private Set<Athlete> athletes;
 

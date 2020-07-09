@@ -1,8 +1,10 @@
 package is.symphony.collegeinternship.olympicgames.services.impl;
 
+import is.symphony.collegeinternship.olympicgames.models.Competition;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
+import is.symphony.collegeinternship.olympicgames.models.dto.CompetitionDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.CountryDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
@@ -68,5 +70,19 @@ public class DTOConverterService {
         CountryDTO countryDTO = modelMapper.map(country, CountryDTO.class);
         LOGGER.info("Converted Country DAO to DTO.");
         return countryDTO;
+    }
+
+    public Competition convertCompetitionDTOToDAO(CompetitionDTO competitionDTO) {
+        LOGGER.info("Converting Competition DTO to DAO...");
+        Competition competition = modelMapper.map(competitionDTO, Competition.class);
+        LOGGER.info("Converted Competition DTO to DAO.");
+        return competition;
+    }
+
+    public CompetitionDTO convertCompetitionDTO(Competition competition) {
+        LOGGER.info("Converting Competition DAO to DTO...");
+        CompetitionDTO competitionDTO = modelMapper.map(competition, CompetitionDTO.class);
+        LOGGER.info("Converted Competition DAO to DTO.");
+        return competitionDTO;
     }
 }

@@ -50,7 +50,19 @@ public class Athlete implements Serializable {
     @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     private Set<Sport> sports;
 
+    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private Set<Competition> competitions;
+
     public Athlete() {
+    }
+
+    public Set<Competition> getCompetitions() {
+        return competitions;
+    }
+
+    public Athlete setCompetitions(Set<Competition> competitions) {
+        this.competitions = competitions;
+        return this;
     }
 
     @JsonProperty("first_name")
