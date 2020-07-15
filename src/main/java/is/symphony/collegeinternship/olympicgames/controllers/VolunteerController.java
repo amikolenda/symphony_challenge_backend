@@ -27,8 +27,6 @@ public class VolunteerController {
     private VolunteerService volunteerService;
     @Autowired
     private SportService sportService;
-    @Autowired
-    CountryService countryService;
 
     @GetMapping
     public ResponseEntity<List<VolunteerDTO>> showVolunteers() {
@@ -37,10 +35,6 @@ public class VolunteerController {
     @GetMapping("/{userName}")
     public ResponseEntity<VolunteerDTO> showVolunteer(@PathVariable("userName") String userName) throws ElementNotFoundException {
         return ResponseEntity.ok().body(volunteerService.findDTOByUserName(userName));
-    }
-    @GetMapping("/countries")
-    public ResponseEntity<List<CountryDTO>> showCountries() {
-        return ResponseEntity.ok().body(countryService.findAllDTO());
     }
 
     @GetMapping("/sports")

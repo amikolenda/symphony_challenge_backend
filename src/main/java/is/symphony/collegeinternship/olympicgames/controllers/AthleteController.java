@@ -28,7 +28,7 @@ public class AthleteController {
     @Autowired
     private AthleteService athleteService;
     @Autowired
-    SportService sportService;
+    private SportService sportService;
 
     @GetMapping
     public ResponseEntity<List<AthleteDTO>> showAthletes() {

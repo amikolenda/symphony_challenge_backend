@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/volunteers/**").hasAnyAuthority("ADMIN","VOLUNTEER")
                 .antMatchers("/api/sports/**").hasAnyAuthority("ADMIN","VOLUNTEER")
                 .antMatchers("/api/athletes/**").hasAnyAuthority("ATHLETE","ADMIN")
-                .antMatchers("/resources/**","/h2-console/**","/api/upload","/login","/signup","/api/competitions/**"/*,"/api/athletes/**","/api/volunteers/**","/api/sports/**" */).permitAll()
+                .antMatchers("/resources/**","/h2-console/**","/api/upload","/login","/signup","/api/countries","/api/competitions/**"/*,"/api/athletes/**","/api/volunteers/**","/api/sports/**" */).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authorizeRequests()
