@@ -121,7 +121,7 @@ public class AthleteService {
     }
 
     public Set<Athlete> setAthletes(Set<Athlete> athletesSet){
-        LOGGER.info("Setting athletes to sport...");
+        LOGGER.info("Setting athletes to sport/competition...");
         Set<Athlete> temp = new HashSet<>();
         for (Athlete athlete : athletesSet) {
             String badgeNumber = athlete.getBadgeNumber();
