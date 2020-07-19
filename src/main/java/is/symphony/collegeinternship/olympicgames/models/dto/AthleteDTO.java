@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AthleteDTO {
+    private Long id;
 
     @NotNull
     @Size(min = 2)
@@ -46,11 +47,17 @@ public class AthleteDTO {
 
     private Set<SportDTO> sports;
 
-
-
     public AthleteDTO() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public AthleteDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getRole() {
         return role;
@@ -159,7 +166,8 @@ public class AthleteDTO {
     @Override
     public String toString() {
         return "AthleteDTO{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +

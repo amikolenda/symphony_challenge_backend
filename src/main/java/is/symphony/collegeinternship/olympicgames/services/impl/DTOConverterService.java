@@ -2,10 +2,12 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 
 import is.symphony.collegeinternship.olympicgames.models.Competition;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.models.Jump;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import is.symphony.collegeinternship.olympicgames.models.dto.CompetitionDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.CountryDTO;
+import is.symphony.collegeinternship.olympicgames.models.dto.JumpDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
 import org.modelmapper.ModelMapper;
@@ -85,4 +87,19 @@ public class DTOConverterService {
         LOGGER.info("Converted Competition DAO to DTO.");
         return competitionDTO;
     }
+
+    public Jump convertJumpDTOToDAO(JumpDTO jumpDTO) {
+        LOGGER.info("Converting Jump DTO to DAO...");
+        Jump jump = modelMapper.map(jumpDTO, Jump.class);
+        LOGGER.info("Converted Jump DTO to DAO.");
+        return jump;
+    }
+
+    public JumpDTO convertJumpDTO(Jump jump) {
+        LOGGER.info("Converting Jump DAO to DTO...");
+        JumpDTO jumpDTO = modelMapper.map(jump, JumpDTO.class);
+        LOGGER.info("Converted Jump DAO to DTO.");
+        return jumpDTO;
+    }
+
 }

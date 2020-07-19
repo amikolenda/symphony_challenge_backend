@@ -20,7 +20,7 @@ public class CompetitionDTO {
     private Date dateTime;
 
     @JsonProperty("sport")
-    private Sport competitionSport;
+    private SportDTO competitionSport;
 
     private Set<AthleteDTO> athletes;
 
@@ -63,14 +63,15 @@ public class CompetitionDTO {
         return this;
     }
     @JsonProperty("sport")
-    public Sport getCompetitionSport() {
+    public SportDTO getCompetitionSport() {
         return competitionSport;
     }
 
-    public CompetitionDTO setCompetitionSport(Sport competitionSport) {
+    public CompetitionDTO setCompetitionSport(SportDTO competitionSport) {
         this.competitionSport = competitionSport;
         return this;
     }
+
 
     public Set<AthleteDTO> getAthletes() {
         return athletes;
