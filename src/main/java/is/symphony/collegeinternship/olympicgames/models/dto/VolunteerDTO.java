@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class VolunteerDTO {
+    private Long id;
+
     @JsonProperty("first_name")
     @NotNull
     @Size(min = 2)
@@ -50,6 +52,16 @@ public class VolunteerDTO {
         this.firstName = firstName;
         return this;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public VolunteerDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
@@ -157,7 +169,8 @@ public class VolunteerDTO {
     @Override
     public String toString() {
         return "VolunteerDTO{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +

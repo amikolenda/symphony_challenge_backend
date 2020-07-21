@@ -41,22 +41,22 @@ public class AthleteController {
         return ResponseEntity.ok().body(sportService.findAllDTO());
     }
 
-    @GetMapping("/{badge_number}")
-    public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("badge_number") String badge_number) throws ElementNotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<AthleteDTO> showAthlete(@PathVariable("id") Long id) throws ElementNotFoundException {
         LOGGER.info("Listing an athlete...");
-        return ResponseEntity.ok().body(athleteService.findDTOByBadgeNumber(badge_number));
+        return ResponseEntity.ok().body(athleteService.findDTOById(id));
     }
-    @PutMapping("/{badge_number}")
-    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("badge_number") String badge_number, @RequestBody @Valid AthleteDTO athleteDTO) throws ElementNotFoundException {
+    @PutMapping("/{id}")
+    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("id") Long id, @RequestBody @Valid AthleteDTO athleteDTO) throws ElementNotFoundException {
         LOGGER.info("Updating an athlete...");
         return ResponseEntity.ok().body(athleteService.updateAthlete(athleteDTO));
     }
 
-    @DeleteMapping("/{badge_number}")
-    public ResponseEntity<String> deleteAthlete(@PathVariable("badge_number") String badge_number) throws ElementNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAthlete(@PathVariable("id") Long id) throws ElementNotFoundException {
         LOGGER.info("Deleting an athlete...");
-        athleteService.delete(badge_number);
-        return ResponseEntity.ok().body("Athlete with badge number: " + badge_number + "is deleted");
+        athleteService.delete(id);
+        return ResponseEntity.ok().body("Athlete with id number: " + id + "is deleted");
     }
 
 }

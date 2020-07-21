@@ -96,6 +96,31 @@ public class VolunteerService {
             throw new ElementNotFoundException();
         }
     }
+
+    public VolunteerDTO findDTOById(Long id) throws ElementNotFoundException {
+        try{
+            LOGGER.info("Accessing DB to get a volunteer...");
+            Volunteer found = volunteerRepository.findById(id).get();
+            LOGGER.info("Found {}", found);
+            return dtoConverterService.convertVolunteerDTO(found);
+        } catch (Exception e){
+            LOGGER.error("Volunteer not found.");
+            throw new ElementNotFoundException();
+        }
+    }
+
+    private Volunteer findById(Long id) {
+        try{
+            LOGGER.info("Accessing DB to get a volunteer...");
+            Volunteer found = volunteerRepository.findById(id).get();
+            LOGGER.info("Found {}", found);
+            return found;
+        } catch (Exception e){
+            LOGGER.error("Volunteer not found.");
+            throw new ElementNotFoundException();
+        }
+    }
+
     public List<VolunteerDTO> findAllDTO() throws ElementNotFoundException{
         LOGGER.info("Accessing DB to get all volunteers...");
         List<Volunteer> allVolunteersList = volunteerRepository.findAll();
@@ -108,15 +133,13 @@ public class VolunteerService {
         else return allVolunteers;
     }
 
-    public VolunteerDTO updateVolunteer(VolunteerDTO volunteerDTO, String userName) throws ElementNotFoundException{
-        if (!volunteerRepository.existsByUserName(userName)) {
+    public VolunteerDTO updateVolunteer(VolunteerDTO volunteerDTO) throws ElementNotFoundException{
+        if (!volunteerRepository.existsById(volunteerDTO.getId())) {
             LOGGER.error("Volunteer does not exist!");
             throw new ElementNotFoundException();
         }
         LOGGER.info("Updating volunteer...");
-        Volunteer existingVolunteer = volunteerRepository.findVolunteerByUserName(userName);
         Volunteer volunteer = dtoConverterService.convertVolunteerDTOToDAO(volunteerDTO);
-        volunteer.setId(existingVolunteer.getId());
         String password = passwordEncoder.encode(volunteer.getPassword());
         volunteer.setPassword(password);
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
@@ -129,11 +152,11 @@ public class VolunteerService {
         return dtoConverterService.convertVolunteerDTO(volunteer);
     }
 
-    public void delete(String userName) throws ElementNotFoundException{
+    public void delete(Long id) throws ElementNotFoundException{
         LOGGER.info("Accessing DB to get a volunteer...");
-        Volunteer volunteer = findByUserName(userName);
+        Volunteer volunteer = findById(id);
         LOGGER.info("Deleting volunteer...");
-        volunteerRepository.delete(findByUserName(userName));
+        volunteerRepository.delete(findById(id));
         LOGGER.info("Volunteer deleted!");
     }
 

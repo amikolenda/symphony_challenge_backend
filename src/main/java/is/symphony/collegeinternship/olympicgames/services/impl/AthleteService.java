@@ -69,10 +69,22 @@ public class AthleteService {
         return allAthletesList;
     }
 
-    public AthleteDTO findDTOByBadgeNumber(String badge_number) throws ElementNotFoundException {
+    public AthleteDTO findDTOById(Long id) throws ElementNotFoundException {
         try{
             LOGGER.info("Accessing DB to get an athlete...");
-            Athlete found = athleteRepository.findByBadgeNumber(badge_number);
+            Athlete found = athleteRepository.findById(id).get();
+            LOGGER.info("Found {}", found);
+            return dtoConverterService.convertToDTO(found);
+        } catch (Exception e){
+            LOGGER.error("Athlete not found.");
+            throw new ElementNotFoundException();
+        }
+    }
+
+    public AthleteDTO findDTOByBadgeNumber(String badgeNumber) throws ElementNotFoundException {
+        try{
+            LOGGER.info("Accessing DB to get an athlete...");
+            Athlete found = athleteRepository.findByBadgeNumber(badgeNumber);
             LOGGER.info("Found {}", found);
             return dtoConverterService.convertToDTO(found);
         } catch (Exception e){
@@ -105,14 +117,12 @@ public class AthleteService {
     }
 
     public AthleteDTO updateAthlete(AthleteDTO athleteDTO) throws ElementNotFoundException{
-        if (!athleteRepository.existsByBadgeNumber(athleteDTO.getBadgeNumber())) {
+        if (!athleteRepository.existsById(athleteDTO.getId())) {
             LOGGER.error("Athlete does not exist!");
             throw new ElementNotFoundException();
         }
         LOGGER.info("Updating an athlete...");
         Athlete newAthlete = dtoConverterService.convertAthleteDTOToDAO(athleteDTO);
-        Athlete existingAthlete = athleteRepository.findByBadgeNumber(newAthlete.getBadgeNumber());
-        newAthlete.setId(existingAthlete.getId());
         newAthlete.setCountry(countryService.findByCountryShortCode(newAthlete.getNationality()));
 
         Set<Sport> sportsSet = newAthlete.getSports();
@@ -123,9 +133,9 @@ public class AthleteService {
         return dtoConverterService.convertToDTO(newAthlete);
     }
 
-    public void delete(String badge_number) throws ElementNotFoundException{
+    public void delete(Long id) throws ElementNotFoundException{
         LOGGER.info("Accessing DB to get an athlete...");
-        Athlete athlete = findByBadgeNumber(badge_number);
+        Athlete athlete = findById(id);
         LOGGER.info("Deleting an athlete...");
         athleteRepository.delete(athlete);
         LOGGER.info("Athlete deleted.");

@@ -32,9 +32,9 @@ public class VolunteerController {
     public ResponseEntity<List<VolunteerDTO>> showVolunteers() {
         return ResponseEntity.ok().body(volunteerService.findAllDTO());
     }
-    @GetMapping("/{userName}")
-    public ResponseEntity<VolunteerDTO> showVolunteer(@PathVariable("userName") String userName) throws ElementNotFoundException {
-        return ResponseEntity.ok().body(volunteerService.findDTOByUserName(userName));
+    @GetMapping("/{id}")
+    public ResponseEntity<VolunteerDTO> showVolunteer(@PathVariable("id") Long id) throws ElementNotFoundException {
+        return ResponseEntity.ok().body(volunteerService.findDTOById(id));
     }
 
     @GetMapping("/sports")
@@ -42,14 +42,14 @@ public class VolunteerController {
         return ResponseEntity.ok().body(sportService.findAllDTO());
     }
 
-    @PutMapping("/{userName}")
-    public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable("userName") String userName, @RequestBody @Valid VolunteerDTO volunteerDTO) throws ElementNotFoundException{
-        return ResponseEntity.ok().body(volunteerService.updateVolunteer(volunteerDTO,userName));
+    @PutMapping("/{id}")
+    public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable("id") Long id, @RequestBody @Valid VolunteerDTO volunteerDTO) throws ElementNotFoundException{
+        return ResponseEntity.ok().body(volunteerService.updateVolunteer(volunteerDTO));
     }
-    @DeleteMapping("/{userName}")
-    public ResponseEntity<String> deleteVolunteer(@PathVariable("userName") String userName) throws ElementNotFoundException {
-        volunteerService.delete(userName);
-        return ResponseEntity.ok().body("Volunteer with user name: " + userName + "is deleted");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVolunteer(@PathVariable("id") Long id) throws ElementNotFoundException {
+        volunteerService.delete(id);
+        return ResponseEntity.ok().body("Volunteer with id: " + id + "is deleted");
     }
 
 }
