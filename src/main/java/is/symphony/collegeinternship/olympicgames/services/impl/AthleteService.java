@@ -69,10 +69,22 @@ public class AthleteService {
         return allAthletesList;
     }
 
-    public AthleteDTO findDTOByBadgeNumber(String badge_number) throws ElementNotFoundException {
+    public AthleteDTO findDTOById(Long id) throws ElementNotFoundException {
         try{
             LOGGER.info("Accessing DB to get an athlete...");
-            Athlete found = athleteRepository.findByBadgeNumber(badge_number);
+            Athlete found = athleteRepository.findById(id).get();
+            LOGGER.info("Found {}", found);
+            return dtoConverterService.convertToDTO(found);
+        } catch (Exception e){
+            LOGGER.error("Athlete not found.");
+            throw new ElementNotFoundException();
+        }
+    }
+
+    public AthleteDTO findDTOByBadgeNumber(String badgeNumber) throws ElementNotFoundException {
+        try{
+            LOGGER.info("Accessing DB to get an athlete...");
+            Athlete found = athleteRepository.findByBadgeNumber(badgeNumber);
             LOGGER.info("Found {}", found);
             return dtoConverterService.convertToDTO(found);
         } catch (Exception e){
@@ -92,16 +104,25 @@ public class AthleteService {
         return found;
     }
 
+    private Athlete findById(Long id) {
+        try{
+            LOGGER.info("Accessing DB to get an athlete...");
+            Athlete found = athleteRepository.findById(id).get();
+            LOGGER.info("Athlete found.");
+            return found;
+        } catch (Exception e){
+            LOGGER.info("Athlete not found.");
+            throw new ElementNotFoundException();
+        }
+    }
 
     public AthleteDTO updateAthlete(AthleteDTO athleteDTO) throws ElementNotFoundException{
-        if (!athleteRepository.existsByBadgeNumber(athleteDTO.getBadgeNumber())) {
+        if (!athleteRepository.existsById(athleteDTO.getId())) {
             LOGGER.error("Athlete does not exist!");
             throw new ElementNotFoundException();
         }
         LOGGER.info("Updating an athlete...");
         Athlete newAthlete = dtoConverterService.convertAthleteDTOToDAO(athleteDTO);
-        Athlete existingAthlete = athleteRepository.findByBadgeNumber(newAthlete.getBadgeNumber());
-        newAthlete.setId(existingAthlete.getId());
         newAthlete.setCountry(countryService.findByCountryShortCode(newAthlete.getNationality()));
 
         Set<Sport> sportsSet = newAthlete.getSports();
@@ -112,9 +133,9 @@ public class AthleteService {
         return dtoConverterService.convertToDTO(newAthlete);
     }
 
-    public void delete(String badge_number) throws ElementNotFoundException{
+    public void delete(Long id) throws ElementNotFoundException{
         LOGGER.info("Accessing DB to get an athlete...");
-        Athlete athlete = findByBadgeNumber(badge_number);
+        Athlete athlete = findById(id);
         LOGGER.info("Deleting an athlete...");
         athleteRepository.delete(athlete);
         LOGGER.info("Athlete deleted.");
@@ -124,10 +145,9 @@ public class AthleteService {
         LOGGER.info("Setting athletes to sport/competition...");
         Set<Athlete> temp = new HashSet<>();
         for (Athlete athlete : athletesSet) {
-            String badgeNumber = athlete.getBadgeNumber();
-            if (athleteRepository.existsByBadgeNumber(badgeNumber)) {
-                athlete.setId(findByBadgeNumber(badgeNumber).getId());
-                athlete.setCountry(countryService.findByCountryShortCode(athlete.getNationality()));
+            Long id = athlete.getId();
+            if (athleteRepository.existsById(id)) {
+                Athlete existingAthlete = athleteRepository.findById(id).get();
                 temp.add(athlete);
             } else {
                 LOGGER.info("Athlete does not exist!");
@@ -137,15 +157,30 @@ public class AthleteService {
         return temp;
     }
 
+    public Athlete setAthlete(Athlete athlete) throws ElementNotFoundException{
+        LOGGER.info("Checking if Athlete exists...");
+        if (athleteRepository.existsById(athlete.getId())){
+            Long id = athlete.getId();
+            Athlete existingAthlete = findById(id);
+            LOGGER.info("Athlete exists");
+            return existingAthlete;
+        } else {
+            LOGGER.error("Athlete does not exist!");
+            throw new ElementNotFoundException();
+        }
+    }
+
+
+
     private Set<Sport> setSports(Athlete athlete, Set<Sport> sportsSet){
         LOGGER.info("Setting sports to athlete...");
         Set<Sport> temp = new HashSet<>();
         for (Sport sport : sportsSet) {
-            String name = sport.getName();
-            if (sportRepository.existsByName(name)) {
-                sport.setId(sportRepository.findSportByName(name).getId());
-                athlete.addSport(sport);
-                temp.add(sport);
+            if (sportRepository.existsById(sport.getId())) {
+                Long id = sport.getId();
+                Sport existingSport = sportRepository.findById(id).get();
+                athlete.addSport(existingSport);
+                temp.add(existingSport);
             } else {
                 LOGGER.info("Sport does not exist!");
             }

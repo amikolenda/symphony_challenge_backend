@@ -1,8 +1,11 @@
 package is.symphony.collegeinternship.olympicgames.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
+import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,16 +14,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class VolunteerDetailsImpl implements UserDetails {
-    private String username;
+    private static final long serialVersionUID = -1079145842001304505L;
 
+    private Long id;
+    @JsonProperty("user_name")
+    private String username;
     @JsonIgnore
     private String password;
-
+    @JsonProperty("first_name")
     private String firstName;
-
+    @JsonProperty("last_name")
     private String lastName;
 
     private String nationality;
@@ -30,7 +37,9 @@ public class VolunteerDetailsImpl implements UserDetails {
     private String photo;
 
     private String gender;
+    @JsonProperty("date_of_birth")
     private String dateOfBirth;
+    private Set<Sport> sports;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -44,8 +53,8 @@ public class VolunteerDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public VolunteerDetailsImpl(String username, String password,
-                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth) {
+    public VolunteerDetailsImpl(Long id,String username, String password,
+                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth, Set<Sport> sports) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -56,6 +65,8 @@ public class VolunteerDetailsImpl implements UserDetails {
         this.photo = photo;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
+        this.id = id;
+        this.sports = sports;
     }
 
 
@@ -65,6 +76,7 @@ public class VolunteerDetailsImpl implements UserDetails {
                 .collect(Collectors.toList());
 
         return new VolunteerDetailsImpl(
+                volunteer.getId(),
                 volunteer.getUserName(),
                 volunteer.getPassword(),
                 authorities,
@@ -74,7 +86,8 @@ public class VolunteerDetailsImpl implements UserDetails {
                 volunteer.getCountry(),
                 volunteer.getPhoto(),
                 volunteer.getGender(),
-                volunteer.getDateOfBirth());
+                volunteer.getDateOfBirth(),
+                volunteer.getSports());
     }
 
     @Override
@@ -124,11 +137,11 @@ public class VolunteerDetailsImpl implements UserDetails {
     public int hashCode() {
         return Objects.hash(username);
     }
-
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
-
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
@@ -148,8 +161,16 @@ public class VolunteerDetailsImpl implements UserDetails {
     public String getGender() {
         return gender;
     }
-
+    @JsonProperty("date_of_birth")
     public String getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
     }
 }

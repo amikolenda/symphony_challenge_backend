@@ -1,17 +1,25 @@
 package is.symphony.collegeinternship.olympicgames.security.payload;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.models.Sport;
 
 import java.util.List;
+import java.util.Set;
 
 public class JwtAuthenticationResponse {
     private String accessToken;
     private String tokenType = "Bearer";
+    private Long id;
     private String username;
     private List<String> roles;
+    @JsonProperty("first_name")
     private String firstName;
-
+    @JsonProperty("last_name")
     private String lastName;
+
+    @JsonProperty("badge_number")
+    private String badgeNumber;
 
     private String nationality;
 
@@ -20,9 +28,12 @@ public class JwtAuthenticationResponse {
     private String photo;
 
     private String gender;
+    @JsonProperty("date_of_birth")
     private String dateOfBirth;
 
-    public JwtAuthenticationResponse(String accessToken, String username, List<String> roles,  String firstName, String lastName, String nationality, Country country, String photo, String gender) {
+    private Set<Sport> sports;
+
+    public JwtAuthenticationResponse(String accessToken,Long id, String username, List<String> roles,  String firstName, String lastName,String dateOfBirth, String nationality, Country country,String badgeNumber, String photo, String gender, Set<Sport> sports) {
         this.accessToken = accessToken;
         this.username = username;
         this.roles = roles;
@@ -32,8 +43,12 @@ public class JwtAuthenticationResponse {
         this.country = country;
         this.photo = photo;
         this.gender = gender;
+        this.id = id;
+        this.dateOfBirth = dateOfBirth;
+        this.badgeNumber = badgeNumber;
+        this.sports = sports;
     }
-    public JwtAuthenticationResponse(String accessToken, String username, List<String> roles,  String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth) {
+    public JwtAuthenticationResponse(String accessToken,Long id, String username, List<String> roles,  String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth,Set<Sport> sports) {
         this.accessToken = accessToken;
         this.username = username;
         this.roles = roles;
@@ -44,6 +59,8 @@ public class JwtAuthenticationResponse {
         this.photo = photo;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
+        this.id = id;
+        this.sports = sports;
     }
 
     public JwtAuthenticationResponse(String accessToken, String username, List<String> roles) {
@@ -119,10 +136,39 @@ public class JwtAuthenticationResponse {
         return this;
     }
 
+    public JwtAuthenticationResponse setId(Long id) {
+        this.id = id;
+        return this;
+    }
+    @JsonProperty("badge_number")
+    public String getBadgeNumber() {
+        return badgeNumber;
+    }
+
+    public JwtAuthenticationResponse setBadgeNumber(String badgeNumber) {
+        this.badgeNumber = badgeNumber;
+        return this;
+    }
+
+    public JwtAuthenticationResponse setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
+    }
+
+    public JwtAuthenticationResponse setSports(Set<Sport> sports) {
+        this.sports = sports;
+        return this;
+    }
+
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
-
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
@@ -142,8 +188,12 @@ public class JwtAuthenticationResponse {
     public String getGender() {
         return gender;
     }
-
+    @JsonProperty("date_of_birth")
     public String getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

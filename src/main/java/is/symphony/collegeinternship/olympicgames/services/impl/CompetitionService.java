@@ -128,4 +128,17 @@ public class CompetitionService {
     }
 
 
+    public Competition setCompetition(Competition competition) throws ElementNotFoundException {
+        LOGGER.info("Checking if Competition exists...");
+        if (competitionRepository.existsById(competition.getId())){
+            Long id = competition.getId();
+            Competition existingCompetition = findById(id);
+            LOGGER.info("Competition exists");
+            return existingCompetition;
+        } else {
+            LOGGER.error("Competition does not exist!");
+            throw new ElementNotFoundException();
+        }
+
+    }
 }

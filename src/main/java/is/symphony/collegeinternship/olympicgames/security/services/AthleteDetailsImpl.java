@@ -1,8 +1,10 @@
 package is.symphony.collegeinternship.olympicgames.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.Country;
+import is.symphony.collegeinternship.olympicgames.models.Sport;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,29 +14,41 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AthleteDetailsImpl implements UserDetails {
+    private static final long serialVersionUID = 5546003012463585704L;
+
+    private Long id;
+
     @JsonIgnore
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private String username;
 
     @JsonIgnore
     private String password;
-
+    @JsonProperty("first_name")
     private String firstName;
-
+    @JsonProperty("last_name")
     private String lastName;
 
     private String nationality;
 
     private Country country;
+    @JsonProperty("badge_number")
+    private String badgeNumber;
 
     private String photo;
 
     private String gender;
 
+    @JsonProperty("date_of_birth")
+    private String dateOfBirth;
+
     private Collection<? extends GrantedAuthority> authorities;
+
+    private Set<Sport> sports;
 
     public AthleteDetailsImpl() {
     }
@@ -46,8 +60,8 @@ public class AthleteDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public AthleteDetailsImpl(String username, String password,
-                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String nationality, Country country, String photo, String gender) {
+    public AthleteDetailsImpl(Long id,String username, String password,
+                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,String dateOfBirth, String nationality, Country country,String badgeNumber, String photo, String gender,Set<Sport> sports) {
         this.username = username;
         this.password = passwordEncoder.encode(password);
         this.authorities = authorities;
@@ -57,6 +71,10 @@ public class AthleteDetailsImpl implements UserDetails {
         this.country = country;
         this.photo = photo;
         this.gender = gender;
+        this.id = id;
+        this.dateOfBirth = dateOfBirth;
+        this.badgeNumber = badgeNumber;
+        this.sports = sports;
     }
 
 
@@ -66,15 +84,19 @@ public class AthleteDetailsImpl implements UserDetails {
                 .collect(Collectors.toList());
 
         return new AthleteDetailsImpl(
+                athlete.getId(),
                 athlete.getBadgeNumber(),
                 athlete.getDateOfBirth(),
                 authorities,
                 athlete.getFirstName(),
                 athlete.getLastName(),
+                athlete.getDateOfBirth(),
                 athlete.getNationality(),
                 athlete.getCountry(),
+                athlete.getBadgeNumber(),
                 athlete.getPhoto(),
-                athlete.getGender());
+                athlete.getGender(),
+                athlete.getSports());
     }
 
     @Override
@@ -124,11 +146,11 @@ public class AthleteDetailsImpl implements UserDetails {
     public int hashCode() {
         return Objects.hash(username);
     }
-
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
-
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
@@ -147,5 +169,21 @@ public class AthleteDetailsImpl implements UserDetails {
 
     public String getGender() {
         return gender;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    @JsonProperty("date_of_birth")
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+    @JsonProperty("badge_number")
+    public String getBadgeNumber() {
+        return badgeNumber;
+    }
+
+    public Set<Sport> getSports() {
+        return sports;
     }
 }

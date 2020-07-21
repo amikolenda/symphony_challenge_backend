@@ -44,7 +44,7 @@ public class LoginService {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, athleteDetails.getUsername(), roles, athleteDetails.getFirstName(),athleteDetails.getLastName(),athleteDetails.getNationality(),athleteDetails.getCountry(),athleteDetails.getPhoto(),athleteDetails.getGender()));
+		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,athleteDetails.getId(), athleteDetails.getUsername(), roles, athleteDetails.getFirstName(),athleteDetails.getLastName(),athleteDetails.getDateOfBirth(), athleteDetails.getNationality(),athleteDetails.getCountry(),athleteDetails.getBadgeNumber(), athleteDetails.getPhoto(),athleteDetails.getGender(),athleteDetails.getSports()));
 		} else if(authentication.getPrincipal() instanceof AdminDetailsImpl){
 			AdminDetailsImpl adminDetails = (AdminDetailsImpl) authentication.getPrincipal();
 			List<String> roles = adminDetails.getAuthorities().stream()
@@ -58,7 +58,7 @@ public class LoginService {
 					.map(item -> item.getAuthority())
 					.collect(Collectors.toList());
 
-			return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, volunteerDetails.getUsername(), roles, volunteerDetails.getFirstName(),volunteerDetails.getLastName(),volunteerDetails.getNationality(),volunteerDetails.getCountry(),volunteerDetails.getPhoto(),volunteerDetails.getGender(),volunteerDetails.getDateOfBirth()));
+			return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,volunteerDetails.getId(), volunteerDetails.getUsername(), roles, volunteerDetails.getFirstName(),volunteerDetails.getLastName(),volunteerDetails.getNationality(),volunteerDetails.getCountry(),volunteerDetails.getPhoto(),volunteerDetails.getGender(),volunteerDetails.getDateOfBirth(),volunteerDetails.getSports()));
 
 
 		}
