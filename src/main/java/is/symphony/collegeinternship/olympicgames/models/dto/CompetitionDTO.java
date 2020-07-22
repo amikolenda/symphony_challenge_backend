@@ -24,6 +24,8 @@ public class CompetitionDTO {
 
     private Set<AthleteDTO> athletes;
 
+    private String state;
+
     public CompetitionDTO() {
     }
 
@@ -82,6 +84,15 @@ public class CompetitionDTO {
         return this;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public CompetitionDTO setState(String state) {
+        this.state = state;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,8 +113,9 @@ public class CompetitionDTO {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", dateTime=" + dateTime +
-                ", CompetitionSport=" + competitionSport +
+                ", competitionSport=" + competitionSport +
                 ", athletes=" + athletes +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

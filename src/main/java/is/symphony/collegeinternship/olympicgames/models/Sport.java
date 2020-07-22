@@ -21,7 +21,7 @@ public class Sport implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.REMOVE})
     @JoinTable(
             name = "sport_athlete",
             joinColumns = @JoinColumn(name = "sport_id",referencedColumnName = "id",
@@ -30,7 +30,7 @@ public class Sport implements Serializable {
                     nullable = false, updatable = false))
     private Set<Athlete> athletes;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.REMOVE})
     @JoinTable(
             name = "sport_volunteer",
             joinColumns = @JoinColumn(name = "sport_id",referencedColumnName = "id",

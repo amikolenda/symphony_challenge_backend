@@ -49,7 +49,7 @@ public class Volunteer {
     @Column(name = "role")
     private String role = "VOLUNTEER";
 
-    @ManyToMany(mappedBy = "volunteers",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "volunteers",fetch = FetchType.LAZY)
     private Set<Sport> sports;
 
     public Volunteer() {

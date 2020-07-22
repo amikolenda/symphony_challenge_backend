@@ -53,6 +53,8 @@ public class Competition implements Serializable {
                     nullable = false, updatable = false))
     private Set<Athlete> athletes;
 
+    private String state;
+
     public Competition() {
     }
 
@@ -110,6 +112,15 @@ public class Competition implements Serializable {
         return this;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public Competition setState(String state) {
+        this.state = state;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,8 +141,9 @@ public class Competition implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", dateTime=" + dateTime +
-                ", CompetitionSport=" + competitionSport +
+                ", competitionSport=" + competitionSport +
                 ", athletes=" + athletes +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

@@ -42,9 +42,12 @@ public class CompetitionService {
         Set<Athlete> athletesSet = competition.getAthletes();
         if (athletesSet != null) competition.setAthletes(athleteService.setAthletes(athletesSet));
 
+        competition.setState("CREATED");
+
         LOGGER.info("Saving competition...");
         Competition save = competitionRepository.save(competition);
         LOGGER.info("Saved {}", save);
+
         return dtoConverterService.convertCompetitionDTO(save);
     }
 
@@ -127,6 +130,15 @@ public class CompetitionService {
         return dtoConverterService.convertCompetitionDTO(save);
     }
 
+    public Competition setCompetitionState(Long id, String state) throws ElementNotFoundException{
+        Competition competition = findById(id);
+        LOGGER.info("Setting competition state: {}", state);
+        competition.setState(state);
+        LOGGER.info("Saving competition...");
+        Competition save = competitionRepository.save(competition);
+        LOGGER.info("Saved and state set {}", save);
+        return save;
+    }
 
     public Competition setCompetition(Competition competition) throws ElementNotFoundException {
         LOGGER.info("Checking if Competition exists...");

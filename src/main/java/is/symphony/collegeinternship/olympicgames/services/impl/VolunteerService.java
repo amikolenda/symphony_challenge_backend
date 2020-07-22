@@ -47,7 +47,7 @@ public class VolunteerService {
         volunteerRepository.save(volunteer);
 
         Set<Sport> sportsSet = volunteer.getSports();
-        if (sportsSet != null) setSports(volunteer, sportsSet);
+        if (sportsSet != null) volunteer.setSports(setSports(volunteer, sportsSet));
 
         volunteerRepository.save(volunteer);
         LOGGER.info("Saved {}", volunteer);
@@ -66,7 +66,7 @@ public class VolunteerService {
         volunteerRepository.save(volunteer);
 
         Set<Sport> sportsSet = volunteer.getSports();
-        if (sportsSet != null) setSports(volunteer, sportsSet);
+        if (sportsSet != null) volunteer.setSports(setSports(volunteer, sportsSet));
 
         volunteerRepository.save(volunteer);
         LOGGER.info("Saved/updated {}", volunteer);
@@ -145,7 +145,7 @@ public class VolunteerService {
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
 
         Set<Sport> sportsSet = volunteer.getSports();
-        if (sportsSet != null) setSports(volunteer, sportsSet);
+        if (sportsSet != null) volunteer.setSports(setSports(volunteer, sportsSet));
 
         volunteerRepository.save(volunteer);
         LOGGER.info("Updated {}", volunteer);
@@ -164,11 +164,10 @@ public class VolunteerService {
         LOGGER.info("Setting volunteers to sport...");
         Set<Volunteer> temp = new HashSet<>();
         for (Volunteer volunteer : volunteersSet) {
-            String name = volunteer.getUserName();
-            if (volunteerRepository.existsByUserName(name)) {
-                volunteer.setId(findByUserName(name).getId());
-                volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
-                temp.add(volunteer);
+            Long id = volunteer.getId();
+            if (volunteerRepository.existsById(id)) {
+                Volunteer existingVolunteer = findById(id);
+                temp.add(existingVolunteer);
             } else {
                 LOGGER.info("Volunteer does not exist!");
             }
@@ -180,11 +179,11 @@ public class VolunteerService {
         LOGGER.info("Setting sports to volunteer...");
         Set<Sport> temp = new HashSet<>();
         for (Sport sport : sportsSet) {
-            String name = sport.getName();
-            if (sportRepository.existsByName(name)) {
-                sport.setId(sportRepository.findSportByName(name).getId());
-                volunteer.addSport(sport);
-                temp.add(sport);
+            Long id = sport.getId();
+            if (sportRepository.existsById(id)) {
+                Sport existingSport = sportRepository.findById(id).get();
+                volunteer.addSport(existingSport);
+                temp.add(existingSport);
             } else {
                 LOGGER.info("Sport does not exist!");
             }

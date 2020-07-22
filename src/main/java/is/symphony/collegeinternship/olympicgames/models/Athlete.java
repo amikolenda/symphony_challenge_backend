@@ -50,7 +50,7 @@ public class Athlete implements Serializable {
     @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     private Set<Sport> sports;
 
-    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY)
     private Set<Competition> competitions;
 
     public Athlete() {

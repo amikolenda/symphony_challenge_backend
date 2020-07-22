@@ -3,11 +3,13 @@ package is.symphony.collegeinternship.olympicgames.services.impl;
 import is.symphony.collegeinternship.olympicgames.models.Competition;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 import is.symphony.collegeinternship.olympicgames.models.Jump;
+import is.symphony.collegeinternship.olympicgames.models.Result;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
 import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import is.symphony.collegeinternship.olympicgames.models.dto.CompetitionDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.CountryDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.JumpDTO;
+import is.symphony.collegeinternship.olympicgames.models.dto.ResultDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
 import org.modelmapper.ModelMapper;
@@ -102,4 +104,17 @@ public class DTOConverterService {
         return jumpDTO;
     }
 
+    public Result convertResultDTOToDAO(ResultDTO resultDTO) {
+        LOGGER.info("Converting Result DTO to DAO...");
+        Result result = modelMapper.map(resultDTO, Result.class);
+        LOGGER.info("Converted Result DTO to DAO.");
+        return result;
+    }
+
+    public ResultDTO convertResultDTO(Result result) {
+        LOGGER.info("Converting Result DAO to DTO...");
+        ResultDTO resultDTO = modelMapper.map(result, ResultDTO.class);
+        LOGGER.info("Converted Result DAO to DTO.");
+        return resultDTO;
+    }
 }
