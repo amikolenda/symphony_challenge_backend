@@ -1,8 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import is.symphony.collegeinternship.olympicgames.models.Athlete;
-import is.symphony.collegeinternship.olympicgames.models.Competition;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 

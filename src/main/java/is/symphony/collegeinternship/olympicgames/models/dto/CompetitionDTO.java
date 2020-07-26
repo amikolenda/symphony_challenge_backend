@@ -2,7 +2,6 @@ package is.symphony.collegeinternship.olympicgames.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +14,7 @@ public class CompetitionDTO {
 
     private String description;
 
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date dateTime;
 
@@ -55,7 +54,7 @@ public class CompetitionDTO {
         this.description = description;
         return this;
     }
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     public Date getDateTime() {
         return dateTime;
     }

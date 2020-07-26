@@ -34,7 +34,7 @@ public class Competition implements Serializable {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date dateTime;
 
@@ -84,7 +84,7 @@ public class Competition implements Serializable {
         this.description = description;
         return this;
     }
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     public Date getDateTime() {
         return dateTime;
     }
