@@ -126,7 +126,7 @@ public class AthleteService {
         newAthlete.setCountry(countryService.findByCountryShortCode(newAthlete.getNationality()));
 
         Set<Sport> sportsSet = newAthlete.getSports();
-        if (sportsSet != null) setSports(newAthlete, sportsSet);
+        if (sportsSet != null) newAthlete.setSports(setSports(newAthlete,sportsSet));
 
         athleteRepository.save(newAthlete);
         LOGGER.info("Updated {}", newAthlete);
@@ -148,7 +148,7 @@ public class AthleteService {
             Long id = athlete.getId();
             if (athleteRepository.existsById(id)) {
                 Athlete existingAthlete = athleteRepository.findById(id).get();
-                temp.add(athlete);
+                temp.add(existingAthlete);
             } else {
                 LOGGER.info("Athlete does not exist!");
             }
@@ -172,12 +172,12 @@ public class AthleteService {
 
 
 
-    private Set<Sport> setSports(Athlete athlete, Set<Sport> sportsSet){
+    private Set<Sport> setSports(Athlete athlete,Set<Sport> sportsSet){
         LOGGER.info("Setting sports to athlete...");
         Set<Sport> temp = new HashSet<>();
         for (Sport sport : sportsSet) {
-            if (sportRepository.existsById(sport.getId())) {
-                Long id = sport.getId();
+            Long id = sport.getId();
+            if (sportRepository.existsById(id)) {
                 Sport existingSport = sportRepository.findById(id).get();
                 athlete.addSport(existingSport);
                 temp.add(existingSport);

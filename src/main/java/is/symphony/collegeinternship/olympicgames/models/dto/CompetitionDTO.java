@@ -2,7 +2,6 @@ package is.symphony.collegeinternship.olympicgames.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +14,7 @@ public class CompetitionDTO {
 
     private String description;
 
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date dateTime;
 
@@ -23,6 +22,8 @@ public class CompetitionDTO {
     private SportDTO competitionSport;
 
     private Set<AthleteDTO> athletes;
+
+    private String state;
 
     public CompetitionDTO() {
     }
@@ -53,7 +54,7 @@ public class CompetitionDTO {
         this.description = description;
         return this;
     }
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     public Date getDateTime() {
         return dateTime;
     }
@@ -82,6 +83,15 @@ public class CompetitionDTO {
         return this;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public CompetitionDTO setState(String state) {
+        this.state = state;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,8 +112,9 @@ public class CompetitionDTO {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", dateTime=" + dateTime +
-                ", CompetitionSport=" + competitionSport +
+                ", competitionSport=" + competitionSport +
                 ", athletes=" + athletes +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

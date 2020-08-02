@@ -34,7 +34,7 @@ public class Competition implements Serializable {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date dateTime;
 
@@ -52,6 +52,8 @@ public class Competition implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "athlete_id",referencedColumnName = "id",
                     nullable = false, updatable = false))
     private Set<Athlete> athletes;
+
+    private String state;
 
     public Competition() {
     }
@@ -82,7 +84,7 @@ public class Competition implements Serializable {
         this.description = description;
         return this;
     }
-    @JsonProperty("start-date-time")
+    @JsonProperty("start_date_time")
     public Date getDateTime() {
         return dateTime;
     }
@@ -110,6 +112,15 @@ public class Competition implements Serializable {
         return this;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public Competition setState(String state) {
+        this.state = state;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,8 +141,9 @@ public class Competition implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", dateTime=" + dateTime +
-                ", CompetitionSport=" + competitionSport +
+                ", competitionSport=" + competitionSport +
                 ", athletes=" + athletes +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

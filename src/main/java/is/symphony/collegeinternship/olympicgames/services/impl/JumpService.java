@@ -5,6 +5,7 @@ import is.symphony.collegeinternship.olympicgames.exceptions.ElementNotFoundExce
 import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.Competition;
 import is.symphony.collegeinternship.olympicgames.models.Jump;
+import is.symphony.collegeinternship.olympicgames.models.Result;
 import is.symphony.collegeinternship.olympicgames.models.dto.JumpDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.JumpRepository;
 import org.slf4j.Logger;
@@ -32,14 +33,15 @@ public class JumpService {
     @Autowired
     private AthleteService athleteService;
 
+    @Autowired
+    private ResultService resultService;
+
     public JumpDTO saveDTO(JumpDTO jumpDTO) throws ElementExistsException, ElementNotFoundException {
         Competition competition = dtoConverterService.convertCompetitionDTOToDAO(jumpDTO.getCompetition());
         Athlete athlete = dtoConverterService.convertAthleteDTOToDAO(jumpDTO.getAthlete());
 
         Jump jump = dtoConverterService.convertJumpDTOToDAO(jumpDTO);
 
-        jump.setAthlete(athleteService.setAthlete(athlete));
-        jump.setCompetition(competitionService.setCompetition(competition));
 
         if (jumpRepository.existsByCompetitionAndAthlete(jump.getCompetition(),jump.getAthlete())) {
             LOGGER.error("Jump already exists!");
@@ -47,10 +49,19 @@ public class JumpService {
         }
 
         calculateBestJumps(jump);
+        competitionService.setCompetitionState(competition.getId(),"STARTED");
+
+        jump.setAthlete(athleteService.setAthlete(athlete));
+        jump.setCompetition(competitionService.setCompetition(competition));
 
         LOGGER.info("Saving jump...");
         Jump save = jumpRepository.save(jump);
         LOGGER.info("Jump {} saved!", save);
+
+        LOGGER.info("Calculating results...");
+        Result result = resultService.save(jump);
+        LOGGER.info("Results {} calculated.", result);
+
         return dtoConverterService.convertJumpDTO(save);
     }
 
@@ -93,6 +104,7 @@ public class JumpService {
         LOGGER.info("Deleting a jump...");
         jumpRepository.delete(jump);
         LOGGER.info("Jump deleted.");
+        resultService.delete(jump);
     }
 
     public JumpDTO update(JumpDTO jumpDTO) throws ElementNotFoundException{
@@ -114,6 +126,11 @@ public class JumpService {
         LOGGER.info("Saving jump...");
         Jump save = jumpRepository.save(jump);
         LOGGER.info("Jump {} saved!", save);
+
+        LOGGER.info("Calculating results...");
+        Result result = resultService.update(jump);
+        LOGGER.info("Results {} calculated.", result);
+
         return dtoConverterService.convertJumpDTO(save);
     }
 
@@ -131,11 +148,8 @@ public class JumpService {
 
         double secondBestJump = allJumps.get(1);
         jump.setSecondBestJump(secondBestJump);
+
         LOGGER.info("Calculated best jumps.");
     }
-
-    /*
-
-     */
 
 }
