@@ -126,11 +126,7 @@ public class VolunteerService {
         List<Volunteer> allVolunteersList = volunteerRepository.findAll();
         LOGGER.info("Found {} volunteers!", allVolunteersList.size());
         List<VolunteerDTO> allVolunteers = allVolunteersList.stream().map(dtoConverterService::convertVolunteerDTO).collect(Collectors.toList());
-        if (allVolunteers.isEmpty()) {
-            LOGGER.error("Could not find any volunteers!");
-            throw new ElementNotFoundException();
-        }
-        else return allVolunteers;
+        return allVolunteers;
     }
 
     public VolunteerDTO updateVolunteer(VolunteerDTO volunteerDTO) throws ElementNotFoundException{
