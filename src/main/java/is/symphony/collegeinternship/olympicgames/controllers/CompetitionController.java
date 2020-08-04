@@ -54,6 +54,11 @@ public class CompetitionController {
         LOGGER.info("Listing athletes...");
         return ResponseEntity.ok().body(athleteService.findAllDTO());
     }
+    @GetMapping("/athletes/{id}")
+    public ResponseEntity<List<CompetitionDTO>> showCompetitionByAthlete(@PathVariable("id") Long id) throws ElementNotFoundException {
+        LOGGER.info("Listing a competition...");
+        return ResponseEntity.ok().body(competitionService.findDTOByAthlete(id));
+    }
 
     @GetMapping("/sports")
     public ResponseEntity<List<SportDTO>> showSports() {
