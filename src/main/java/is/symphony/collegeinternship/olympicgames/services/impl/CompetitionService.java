@@ -66,8 +66,7 @@ public class CompetitionService {
             LOGGER.info("Accessing DB to get all competitions by state...");
             List<Competition> allCompetitions = competitionRepository.findAllByState(state);
             LOGGER.info("Found {} competitions!", allCompetitions.size());
-
-            List<CompetitionDTO> allCompetitionsList = competitionRepository.findAll().stream().map(dtoConverterService::convertCompetitionDTO).collect(Collectors.toList());
+            List<CompetitionDTO> allCompetitionsList = allCompetitions.stream().map(dtoConverterService::convertCompetitionDTO).collect(Collectors.toList());
             return allCompetitionsList;
         } else {
             LOGGER.error("Incorrect competition state!");
@@ -107,6 +106,18 @@ public class CompetitionService {
             return dtoConverterService.convertCompetitionDTO(found);
         } catch (Exception e){
             LOGGER.info("Competition not found.");
+            throw new ElementNotFoundException();
+        }
+    }
+    public List<CompetitionDTO> findDTOByAthlete(Long id) throws ElementNotFoundException {
+        try{
+            LOGGER.info("Accessing DB to get a competition by an athlete...");
+            List<Competition> found = competitionRepository.findAllByAthletes(dtoConverterService.convertAthleteDTOToDAO(athleteService.findDTOById(id)));
+            LOGGER.info("Competitions found. {}", found);
+            List<CompetitionDTO> allCompetitionsList = found.stream().map(dtoConverterService::convertCompetitionDTO).collect(Collectors.toList());
+            return allCompetitionsList;
+        } catch (Exception e){
+            LOGGER.info("Competitions not found.");
             throw new ElementNotFoundException();
         }
     }
