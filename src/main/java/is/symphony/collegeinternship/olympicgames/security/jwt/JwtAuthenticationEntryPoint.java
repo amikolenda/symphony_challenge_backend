@@ -21,6 +21,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         logger.error("Responding with unauthorized error. Message - {}", e.getMessage());
         String responseMsg = "Unauthorized. Full authentication is required to access this resource";
         httpServletResponse.getWriter().write(responseMsg);
-        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }
