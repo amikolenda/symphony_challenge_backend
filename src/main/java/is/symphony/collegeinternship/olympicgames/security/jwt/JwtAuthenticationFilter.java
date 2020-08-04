@@ -1,5 +1,6 @@
 package is.symphony.collegeinternship.olympicgames.security.jwt;
 
+import is.symphony.collegeinternship.olympicgames.exceptions.InvalidTokenException;
 import is.symphony.collegeinternship.olympicgames.security.services.UserDetailsServiceImpl;
 import is.symphony.collegeinternship.olympicgames.utils.JwtUtility;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());
+            throw new InvalidTokenException();
         }
 
         filterChain.doFilter(request, response);

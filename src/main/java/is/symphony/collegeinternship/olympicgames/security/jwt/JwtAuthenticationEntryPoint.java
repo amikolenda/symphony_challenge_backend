@@ -2,6 +2,7 @@ package is.symphony.collegeinternship.olympicgames.security.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         logger.error("Responding with unauthorized error. Message - {}", e.getMessage());
-        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        String responseMsg = "Unauthorized. Full authentication is required to access this resource";
+        httpServletResponse.getWriter().write(responseMsg);
+        httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

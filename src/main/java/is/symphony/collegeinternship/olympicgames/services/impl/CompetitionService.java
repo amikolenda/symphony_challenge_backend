@@ -61,6 +61,21 @@ public class CompetitionService {
         return allCompetitionsList;
     }
 
+    public List<CompetitionDTO> findAllDTOByState(String state) throws ElementNotFoundException{
+        if (state.equals("CREATED") || state.equals("STARTED") || state.equals("COMPLETED")){
+            LOGGER.info("Accessing DB to get all competitions by state...");
+            List<Competition> allCompetitions = competitionRepository.findAllByState(state);
+            LOGGER.info("Found {} competitions!", allCompetitions.size());
+
+            List<CompetitionDTO> allCompetitionsList = competitionRepository.findAll().stream().map(dtoConverterService::convertCompetitionDTO).collect(Collectors.toList());
+            return allCompetitionsList;
+        } else {
+            LOGGER.error("Incorrect competition state!");
+            throw new ElementNotFoundException();
+        }
+
+    }
+
     public CompetitionDTO findDTOByName(String name) throws ElementNotFoundException {
         try{
             LOGGER.info("Accessing DB to get a competition...");
