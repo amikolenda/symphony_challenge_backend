@@ -136,8 +136,14 @@ public class VolunteerService {
         }
         LOGGER.info("Updating volunteer...");
         Volunteer volunteer = dtoConverterService.convertVolunteerDTOToDAO(volunteerDTO);
-        String password = passwordEncoder.encode(volunteer.getPassword());
-        volunteer.setPassword(password);
+        if (volunteer.getPassword() != null){
+            String password = passwordEncoder.encode(volunteer.getPassword());
+            volunteer.setPassword(password);
+        } else {
+            Volunteer existingVolunteer = findById(volunteer.getId());
+            volunteer.setPassword(existingVolunteer.getPassword());
+        }
+
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
 
         Set<Sport> sportsSet = volunteer.getSports();
