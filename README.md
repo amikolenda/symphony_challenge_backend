@@ -8,7 +8,6 @@
 * 	[Spring Boot](https://spring.io/projects/spring-boot) - Framework to ease the bootstrapping and development of new Spring Applications
 * 	[H2](https://https://www.h2database.com/) - Relational Database Management System
 * 	[git](https://git-scm.com/) - Free and Open-Source distributed version control system
-* 	[Lombok](https://projectlombok.org/) - Never write another getter or equals method again, with one annotation your class has a fully featured builder, Automate your logging variables, and much more.
 
 ## External Tools Used
 
