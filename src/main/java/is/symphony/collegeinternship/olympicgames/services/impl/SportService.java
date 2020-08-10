@@ -11,6 +11,8 @@ import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.SportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -122,6 +124,15 @@ public class SportService {
     public void delete(Long id) throws ElementNotFoundException {
         LOGGER.info("Accessing DB to get a sport...");
         Sport sport = findById(id);
+
+        Set<Athlete> athletesSet = new HashSet<>();
+        sport.setAthletes(athleteService.setAthletes(athletesSet));
+
+        Set<Volunteer> volunteersSet = new HashSet<>();
+        sport.setVolunteers(volunteerService.setVolunteers(volunteersSet));
+
+        sportRepository.save(sport);
+        LOGGER.info("Updated {}", sport);
         LOGGER.info("Deleting sport...");
         sportRepository.delete(sport);
         LOGGER.info("Sport deleted.");
