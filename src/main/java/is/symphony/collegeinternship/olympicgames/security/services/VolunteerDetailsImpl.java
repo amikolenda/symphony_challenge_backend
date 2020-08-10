@@ -20,7 +20,7 @@ public class VolunteerDetailsImpl implements UserDetails {
     private static final long serialVersionUID = -1079145842001304505L;
 
     private Long id;
-    @JsonProperty("user_name")
+    @JsonProperty("username")
     private String username;
     @JsonIgnore
     private String password;

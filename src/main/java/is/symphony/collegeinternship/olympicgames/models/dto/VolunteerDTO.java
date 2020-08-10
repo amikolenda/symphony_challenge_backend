@@ -27,7 +27,7 @@ public class VolunteerDTO {
     @JsonProperty("country")
     private Country country;
 
-    @JsonProperty("user_name")
+    @JsonProperty("username")
     @NotNull
     private String userName;
     @JsonProperty("photo")
@@ -98,7 +98,7 @@ public class VolunteerDTO {
         this.country = country;
         return this;
     }
-    @JsonProperty("user_name")
+    @JsonProperty("username")
     public String getUserName() {
         return userName;
     }
@@ -175,7 +175,7 @@ public class VolunteerDTO {
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", nationality='" + nationality + '\'' +
                 ", country=" + country +
-                ", userName='" + userName + '\'' +
+                ", username='" + userName + '\'' +
                 ", photo='" + photo + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
