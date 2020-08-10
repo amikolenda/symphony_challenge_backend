@@ -13,6 +13,7 @@ import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
 import is.symphony.collegeinternship.olympicgames.repositories.AthleteRepository;
 
+import javax.persistence.PreRemove;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -125,6 +126,8 @@ public class AthleteService {
         Athlete newAthlete = dtoConverterService.convertAthleteDTOToDAO(athleteDTO);
         newAthlete.setCountry(countryService.findByCountryShortCode(newAthlete.getNationality()));
 
+        Set<Sport> oldSportsSet = findById(athleteDTO.getId()).getSports();
+        removeAthlete(newAthlete, oldSportsSet);
         Set<Sport> sportsSet = newAthlete.getSports();
         if (sportsSet != null) newAthlete.setSports(setSports(newAthlete,sportsSet));
 
@@ -171,7 +174,6 @@ public class AthleteService {
     }
 
 
-
     private Set<Sport> setSports(Athlete athlete,Set<Sport> sportsSet){
         LOGGER.info("Setting sports to athlete...");
         Set<Sport> temp = new HashSet<>();
@@ -187,5 +189,19 @@ public class AthleteService {
         }
         LOGGER.info("Sports set.");
         return temp;
+    }
+    @PreRemove
+    private void removeAthlete(Athlete athlete,Set<Sport> sportsSet){
+        LOGGER.info("Remove athlete from sport...");
+        for (Sport sport : sportsSet) {
+            Long id = sport.getId();
+            if (sportRepository.existsById(id)) {
+                Sport existingSport = sportRepository.findById(id).get();
+                existingSport.getAthletes().remove(athlete);
+            } else {
+                LOGGER.info("Sport does not exist!");
+            }
+        }
+        LOGGER.info("Athletes removed.");
     }
 }
