@@ -16,7 +16,7 @@ public class Volunteer {
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "username")
     @NotNull
     private String userName;
 
@@ -127,7 +127,7 @@ public class Volunteer {
         this.country = country;
         return this;
     }
-    @JsonProperty("user_name")
+    @JsonProperty("username")
     public String getUserName() {
         return userName;
     }
@@ -191,7 +191,7 @@ public class Volunteer {
     public String toString() {
         return "Volunteer{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", username='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
