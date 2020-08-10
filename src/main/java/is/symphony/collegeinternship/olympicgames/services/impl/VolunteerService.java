@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PreRemove;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -145,7 +146,8 @@ public class VolunteerService {
         }
 
         volunteer.setCountry(countryService.findByCountryShortCode(volunteer.getNationality()));
-
+        Set<Sport> oldSportsSet = findById(volunteerDTO.getId()).getSports();
+        removeVolunteer(volunteer, oldSportsSet);
         Set<Sport> sportsSet = volunteer.getSports();
         if (sportsSet != null) volunteer.setSports(setSports(volunteer, sportsSet));
 
@@ -192,5 +194,19 @@ public class VolunteerService {
         }
         LOGGER.info("Sports set.");
         return temp;
+    }
+    @PreRemove
+    public void removeVolunteer(Volunteer volunteer, Set<Sport> sportsSet){
+        LOGGER.info("Removing volunteer from sport...");
+        for (Sport sport : sportsSet) {
+            Long id = sport.getId();
+            if (sportRepository.existsById(id)) {
+                Sport existingSport = sportRepository.findById(id).get();
+                existingSport.getVolunteers().remove(volunteer);
+            } else {
+                LOGGER.info("Sport does not exist!");
+            }
+        }
+        LOGGER.info("Volunteers removed.");
     }
 }

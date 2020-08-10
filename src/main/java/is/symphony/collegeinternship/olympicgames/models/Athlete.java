@@ -47,7 +47,7 @@ public class Athlete implements Serializable {
     @Column(name = "role")
     private String role = "ATHLETE";
 
-    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REMOVE})
     private Set<Sport> sports;
 
     @ManyToMany(mappedBy = "athletes",fetch = FetchType.LAZY)
