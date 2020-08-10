@@ -3,6 +3,7 @@ package is.symphony.collegeinternship.olympicgames.security.payload;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
 import is.symphony.collegeinternship.olympicgames.models.Sport;
+import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -31,9 +32,9 @@ public class JwtAuthenticationResponse {
     @JsonProperty("date_of_birth")
     private String dateOfBirth;
 
-    private Set<Sport> sports;
+    private Set<SportDTO> sports;
 
-    public JwtAuthenticationResponse(String accessToken,Long id, String username, List<String> roles,  String firstName, String lastName,String dateOfBirth, String nationality, Country country,String badgeNumber, String photo, String gender, Set<Sport> sports) {
+    public JwtAuthenticationResponse(String accessToken,Long id, String username, List<String> roles,  String firstName, String lastName,String dateOfBirth, String nationality, Country country,String badgeNumber, String photo, String gender, Set<SportDTO> sports) {
         this.accessToken = accessToken;
         this.username = username;
         this.roles = roles;
@@ -48,7 +49,7 @@ public class JwtAuthenticationResponse {
         this.badgeNumber = badgeNumber;
         this.sports = sports;
     }
-    public JwtAuthenticationResponse(String accessToken,Long id, String username, List<String> roles,  String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth,Set<Sport> sports) {
+    public JwtAuthenticationResponse(String accessToken,Long id, String username, List<String> roles,  String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth,Set<SportDTO> sports) {
         this.accessToken = accessToken;
         this.username = username;
         this.roles = roles;
@@ -155,11 +156,11 @@ public class JwtAuthenticationResponse {
         return this;
     }
 
-    public Set<Sport> getSports() {
+    public Set<SportDTO> getSports() {
         return sports;
     }
 
-    public JwtAuthenticationResponse setSports(Set<Sport> sports) {
+    public JwtAuthenticationResponse setSports(Set<SportDTO> sports) {
         this.sports = sports;
         return this;
     }

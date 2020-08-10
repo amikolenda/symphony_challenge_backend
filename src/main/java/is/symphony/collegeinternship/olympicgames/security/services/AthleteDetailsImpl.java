@@ -2,9 +2,9 @@ package is.symphony.collegeinternship.olympicgames.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import is.symphony.collegeinternship.olympicgames.models.Athlete;
 import is.symphony.collegeinternship.olympicgames.models.Country;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
+import is.symphony.collegeinternship.olympicgames.models.dto.AthleteDTO;
+import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,7 +48,7 @@ public class AthleteDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    private Set<Sport> sports;
+    private Set<SportDTO> sports;
 
     public AthleteDetailsImpl() {
     }
@@ -61,7 +61,7 @@ public class AthleteDetailsImpl implements UserDetails {
     }
 
     public AthleteDetailsImpl(Long id,String username, String password,
-                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,String dateOfBirth, String nationality, Country country,String badgeNumber, String photo, String gender,Set<Sport> sports) {
+                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,String dateOfBirth, String nationality, Country country,String badgeNumber, String photo, String gender,Set<SportDTO> sports) {
         this.username = username;
         this.password = passwordEncoder.encode(password);
         this.authorities = authorities;
@@ -78,7 +78,7 @@ public class AthleteDetailsImpl implements UserDetails {
     }
 
 
-    public static AthleteDetailsImpl build(Athlete athlete) {
+    public static AthleteDetailsImpl build(AthleteDTO athlete) {
         List<GrantedAuthority> authorities = Arrays.stream(athlete.getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -183,7 +183,7 @@ public class AthleteDetailsImpl implements UserDetails {
         return badgeNumber;
     }
 
-    public Set<Sport> getSports() {
+    public Set<SportDTO> getSports() {
         return sports;
     }
 }

@@ -6,6 +6,7 @@ import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import is.symphony.collegeinternship.olympicgames.repositories.AdminRepository;
 import is.symphony.collegeinternship.olympicgames.repositories.AthleteRepository;
 import is.symphony.collegeinternship.olympicgames.repositories.VolunteerRepository;
+import is.symphony.collegeinternship.olympicgames.services.impl.DTOConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,15 +27,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     VolunteerRepository volunteerRepository;
 
+    @Autowired
+    private DTOConverterService dtoConverterService;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<Athlete> athlete = Optional.ofNullable(athleteRepository.findByBadgeNumber(userName));
         Optional<Admin> admin = Optional.ofNullable(adminRepository.findAdminByUserName(userName));
         Optional<Volunteer> volunteer = Optional.ofNullable(volunteerRepository.findVolunteerByUserName(userName));
-        if (athlete.isPresent()) return AthleteDetailsImpl.build(athlete.get());
+        if (athlete.isPresent()) return AthleteDetailsImpl.build(dtoConverterService.convertToDTO(athlete.get()));
         else if (admin.isPresent()) return AdminDetailsImpl.build(admin.get());
-        else if (volunteer.isPresent()) return VolunteerDetailsImpl.build(volunteer.get());
+        else if (volunteer.isPresent()) return VolunteerDetailsImpl.build(dtoConverterService.convertVolunteerDTO(volunteer.get()));
 
         throw new UsernameNotFoundException("User Not Found: " + userName);
     }

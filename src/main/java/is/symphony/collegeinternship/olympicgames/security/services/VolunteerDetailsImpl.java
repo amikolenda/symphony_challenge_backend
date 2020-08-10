@@ -3,9 +3,8 @@ package is.symphony.collegeinternship.olympicgames.security.services;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import is.symphony.collegeinternship.olympicgames.models.Country;
-import is.symphony.collegeinternship.olympicgames.models.Sport;
-import is.symphony.collegeinternship.olympicgames.models.Volunteer;
 import is.symphony.collegeinternship.olympicgames.models.dto.SportDTO;
+import is.symphony.collegeinternship.olympicgames.models.dto.VolunteerDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +38,7 @@ public class VolunteerDetailsImpl implements UserDetails {
     private String gender;
     @JsonProperty("date_of_birth")
     private String dateOfBirth;
-    private Set<Sport> sports;
+    private Set<SportDTO> sports;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -54,7 +53,7 @@ public class VolunteerDetailsImpl implements UserDetails {
     }
 
     public VolunteerDetailsImpl(Long id,String username, String password,
-                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth, Set<Sport> sports) {
+                              Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String nationality, Country country, String photo, String gender, String dateOfBirth, Set<SportDTO> sports) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -70,7 +69,7 @@ public class VolunteerDetailsImpl implements UserDetails {
     }
 
 
-    public static VolunteerDetailsImpl build(Volunteer volunteer) {
+    public static VolunteerDetailsImpl build(VolunteerDTO volunteer) {
         List<GrantedAuthority> authorities = Arrays.stream(volunteer.getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -170,7 +169,7 @@ public class VolunteerDetailsImpl implements UserDetails {
         return id;
     }
 
-    public Set<Sport> getSports() {
+    public Set<SportDTO> getSports() {
         return sports;
     }
 }
