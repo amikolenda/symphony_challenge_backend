@@ -45,12 +45,6 @@ public class SportService {
         LOGGER.info("Saving sport...");
         Sport sport = dtoConverterService.convertSportDTOToDAO(sportDTO);
 
-        Set<Athlete> athletesSet = sport.getAthletes();
-        if (athletesSet != null) sport.setAthletes(athleteService.setAthletes(athletesSet));
-
-        Set<Volunteer> volunteersSet = sport.getVolunteers();
-        if (volunteersSet != null) sport.setVolunteers(volunteerService.setVolunteers(volunteersSet));
-
         LOGGER.info("Saving sport...");
         Sport save = sportRepository.save(sport);
         LOGGER.info("Saved {}", save);
@@ -147,15 +141,15 @@ public class SportService {
         }
         LOGGER.info("Updating sport...");
         Sport newSport = dtoConverterService.convertSportDTOToDAO(sportDTO);
-        Set<Athlete> athletesSet = newSport.getAthletes();
-        if (athletesSet != null) newSport.setAthletes(athleteService.setAthletes(athletesSet));
 
-        Set<Volunteer> volunteersSet = newSport.getVolunteers();
-        if (volunteersSet != null) newSport.setVolunteers(volunteerService.setVolunteers(volunteersSet));
+        Sport existingSport = findById(sportDTO.getId());
+        existingSport.setName(newSport.getName());
+        existingSport.setDescription(newSport.getDescription());
 
-        sportRepository.save(newSport);
-        LOGGER.info("Updated {}", newSport);
-        return dtoConverterService.convertSportDTO(newSport);
+
+        sportRepository.save(existingSport);
+        LOGGER.info("Updated {}", existingSport);
+        return dtoConverterService.convertSportDTO(existingSport);
     }
 
 }
